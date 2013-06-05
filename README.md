@@ -1,8 +1,14 @@
 # Welcome to your starter kit
 
-Make sure you have a new version of [Node.js](http://nodejs.org/) (v0.8+).
+### Clone this repository
+
+```sh
+git clone git@github.com:kikinteractive/starter-kit.git
+```
 
 ### Install dependencies
+
+Make sure you have a new version of [Node.js](http://nodejs.org/) (v0.8+).
 
 ```sh
 npm install
