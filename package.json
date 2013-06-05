@@ -1,0 +1,14 @@
+{
+  "name" : "starter-kit" ,
+  "version" : "0.0.1" ,
+  "engines" : {
+    "node" : "0.8.x" ,
+    "npm"  : "1.1.x"
+  },
+  "dependencies" : {
+    "zerver" : "0.11.5"
+  },
+  "scripts" : {
+  	"start" : "zerver --manifest=cache.manifest --port=5000 -drl web"
+  }
+}

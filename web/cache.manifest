@@ -1,0 +1,16 @@
+CACHE MANIFEST
+
+# zerver:css/main.min.css
+/css/default.css
+/css/styles.css
+# /zerver
+
+# zerver:js/main.min.js
+/js/zepto.js
+/js/cards.js
+/js/app.js
+/js/main.js
+# /zerver
+
+NETWORK:
+*
