@@ -6,6 +6,7 @@ CACHE MANIFEST
 # /zerver
 
 # zerver:js/main.min.js
+/zerver/API.js
 /js/zepto.js
 /js/cards.js
 /js/app.js
