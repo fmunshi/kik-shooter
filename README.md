@@ -3,7 +3,7 @@
 ### Clone this repository
 
 ```sh
-git clone git@github.com:kikinteractive/starter-kit.git
+git clone git://github.com/kikinteractive/starter-kit.git
 ```
 
 ### Install dependencies
