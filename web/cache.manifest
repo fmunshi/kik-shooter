@@ -8,10 +8,11 @@ CACHE MANIFEST
 # zerver:js/main.min.js
 /zerver/API.js
 /js/zepto.js
-/js/cards.js
 /js/app.js
 /js/main.js
 # /zerver
+
+http://cdn.kik.com/cards/0/cards.js
 
 NETWORK:
 *
