@@ -1,45 +1,47 @@
 <!DOCTYPE html>
 <html manifest="cache.manifest">
 	<head>
+		<!-- Card info -->
 		<title>Starter Kit</title>
 		<meta name="description" content="My amazing card!">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<meta name="kik-prefer" content="true">
 		<link rel="kik-icon" href="/img/icon.png">
 
-		<!-- zerver:css/main.min.css -->
-		<link rel="stylesheet" href="/css/default.css">
+		<!-- Styles -->
+		<link rel="stylesheet" href="http://cdn.kik.com/app/1/default.css">
 		<link rel="stylesheet" href="/css/styles.css">
-		<!-- /zerver -->
 	</head>
 
-	<div class="app-page" data-page="home">
-		<div class="app-topbar">
-			<div class="app-title">Home page</div>
-		</div>
-		<div class="app-content">
-			<div class="app-section">
-				<div class="app-button" data-target="page2">Go to Page 2</div>
+	<body>
+		<!-- Pages -->
+
+		<div class="app-page" data-page="home">
+			<div class="app-topbar">
+				<div class="app-title">Home page</div>
+			</div>
+			<div class="app-content">
+				<div class="app-section">
+					<div class="app-button" data-target="page2">Go to Page 2</div>
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="app-page" data-page="page2">
-		<div class="app-topbar">
-			<div class="app-button left" data-back="true">Back</div>
-			<div class="app-title">Page 2</div>
+		<div class="app-page" data-page="page2">
+			<div class="app-topbar">
+				<div class="app-button left" data-back="true">Back</div>
+				<div class="app-title">Page 2</div>
+			</div>
+			<div class="app-content">
+				Page 2 is lonely
+			</div>
 		</div>
-		<div class="app-content">
-			Page 2 is lonely
-		</div>
-	</div>
 
-	<script src="http://cdn.kik.com/cards/0/cards.js"></script>
-
-	<!-- zerver:js/main.min.js -->
-	<script src="/zerver/API.js"></script>
-	<script src="/js/zepto.js"></script>
-	<script src="/js/app.js"></script>
-	<script src="/js/main.js"></script>
-	<!-- /zerver -->
+		<!-- Scripts -->
+		<script src="/zerver/API.js"></script>
+		<script src="http://zeptojs.com/zepto.min.js"></script>
+		<script src="http://cdn.kik.com/cards/0/cards.js"></script>
+		<script src="http://cdn.kik.com/app/1/app.js"></script>
+		<script src="/js/main.js"></script>
+	</body>
 </html>

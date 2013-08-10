@@ -9,8 +9,7 @@
 
 	try {
 		App.restore();
-	}
-	catch (err) {
+	} catch (err) {
 		App.load('home');
 	}
 })(App);
