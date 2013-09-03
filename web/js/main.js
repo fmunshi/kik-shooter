@@ -1,15 +1,18 @@
 (function (App) {
-	App.populator('home', function (page) {
-		// put stuff here
+	App.populator('Home', function (page) {
+		console.log('log');
 	});
 
-	App.populator('page2', function (page) {
-		// put stuff here
+	App.populator('game', function (page) {
+		require.setModuleRoot("js/");
+		require.run("app");
+    	console.log('log');
 	});
 
 	try {
-		App.restore();
+		// App.restore();
+		App.load('Home');
 	} catch (err) {
-		App.load('home');
+		App.load('Home');
 	}
 })(App);

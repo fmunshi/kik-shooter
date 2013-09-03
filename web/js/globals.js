@@ -1,0 +1,8 @@
+exports = {
+
+
+	images : {
+		player : ""
+	}
+
+}

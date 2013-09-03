@@ -2,8 +2,8 @@
 <html manifest="cache.manifest">
 	<head>
 		<!-- Card info -->
-		<title>Starter Kit</title>
-		<meta name="description" content="My amazing card!">
+		<title>Space</title>
+		<meta name="description" content="Space">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<meta name="kik-prefer" content="true">
 		<link rel="kik-icon" href="/img/icon.png">
@@ -11,30 +11,26 @@
 		<!-- Styles -->
 		<link rel="stylesheet" href="http://cdn.kik.com/app/1/default.css">
 		<link rel="stylesheet" href="/css/styles.css">
+		<script src="lib/yabble.js"></script>
+    	<script src="lib/gamejs.min.js"></script>
 	</head>
 
 	<body>
 		<!-- Pages -->
 
-		<div class="app-page" data-page="home">
+		<div class="app-page" data-page="Home">
 			<div class="app-topbar">
 				<div class="app-title">Home page</div>
 			</div>
 			<div class="app-content">
 				<div class="app-section">
-					<div class="app-button" data-target="page2">Go to Page 2</div>
+					<div class="app-button" data-target="game">Start</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="app-page" data-page="page2">
-			<div class="app-topbar">
-				<div class="app-button left" data-back="true">Back</div>
-				<div class="app-title">Page 2</div>
-			</div>
-			<div class="app-content">
-				Page 2 is lonely
-			</div>
+		<div class = "app-page" data-page="game">
+			<canvas id="gjs-canvas"></canvas>
 		</div>
 
 		<!-- Scripts -->
