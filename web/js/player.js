@@ -2,6 +2,7 @@ var gamejs = require("gamejs");
 var $g = require("globals");
 var $e = require("gamejs/event");
 var $m = require("gamejs/utils/math");
+var $Laser = require("laser").Laser;
 
 Player = function(rect) {
   // call superconstructor
@@ -11,8 +12,10 @@ Player = function(rect) {
   this.image = gamejs.transform.rotate(this.originalImage, 0);
   
   // [x,y]
-  this.pos = [0,0];
-  this.size = rect
+  this.pos = [$g.screen.right/2,$g.screen.bot-30];
+
+  this.size = rect;
+  this.velocity = [0,0];
 
 
   // Rect stuff
@@ -27,7 +30,8 @@ gamejs.utils.objects.extend(Player, gamejs.sprite.Sprite);
 
 
 Player.prototype.update = function(msDuration) {
-   	this.moveIp(velocity);
+	this.rect.moveIp(this.velocity);
+	this.pos = this.rect.center;
 };
 
 
@@ -35,17 +39,18 @@ Player.prototype.handle = function(event){
 
 };
 
+Player.prototype.shoot = function(pos) {
+	var laser = new $Laser(pos);
+	$g.lasers.add(laser);
+}
+
 
 Player.prototype.draw = function (display){
   display.blit(this.image, this.rect);
 };
 
-Player.prototype.moveIp = function(velocity){
-
+Player.prototype.move = function(gamma){
+	this.velocity = [gamma/2, 0];
 };
 
-Player.prototype.move = function(){
-
-};
-
-exports = Player;
+exports.Player = Player;

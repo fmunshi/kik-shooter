@@ -10,8 +10,8 @@
 	});
 
 	try {
-		// App.restore();
-		App.load('Home');
+		App.restore();
+		// App.load('Home');
 	} catch (err) {
 		App.load('Home');
 	}
