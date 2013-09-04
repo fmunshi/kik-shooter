@@ -28,7 +28,7 @@ var Enemy = function(rect) {
   this.pos = [Math.random()*$g.screen.right,$g.screen.top-10];
 
   this.size = rect;
-  this.velocity = [0,Math.random()*2 + 2];
+  this.velocity = [0,Math.random()*2];
 
   // Rect stuff
   this.rect = new gamejs.Rect(rect);
@@ -116,7 +116,7 @@ var eLaser = function(pos, vel) {
   this.pos = pos
 
   this.size = size;
-  this.velocity = [0,Math.random()*10 + 5 + vel[1]];
+  this.velocity = [0,Math.random()*10 + vel[1]];
 
 
   // Rect stuff
