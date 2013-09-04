@@ -23,19 +23,17 @@ var Player = function(rect) {
   this.frame = 0;
   
   // [x,y]
-  this.pos = [$g.screen.right/2,$g.screen.bot-30];
+  this.pos = [$g.screen.right/2,$g.screen.bot-50];
 
   this.size = rect;
   this.velocity = [0,0];
 
   this.stats = {
-    health    : 100,
+    health    : 1,
     damage    : 10,
   };
 
-
-
-  this.health = 100;
+  this.health = 1;
 
 
   // Rect stuff
