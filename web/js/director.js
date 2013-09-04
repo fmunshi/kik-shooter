@@ -14,10 +14,10 @@ Director.prototype.update = function(msDuration) {
   }
 };
 
-Director.prototype.draw = function(display) {
+Director.prototype.draw = function(display, msDuration) {
   if (!this.onAir) return;
   if (this.activeScene.draw) {
-    this.activeScene.draw(display);
+    this.activeScene.draw(display, msDuration);
   }
 };
 

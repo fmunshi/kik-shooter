@@ -33,6 +33,7 @@ Player.prototype.update = function(msDuration) {
 	this.rect.moveIp(this.velocity);
 	this.pos = this.rect.center;
   this.checkbounds();
+  this.collide();
 };
 
 
@@ -64,10 +65,9 @@ Player.prototype.checkbounds = function(){
 };
 
 Player.prototype.collide = function(){
-
   var collide = gamejs.sprite.spriteCollide(this, $g.projectiles, true);
-  if (collide.length > 0){
-    // do something
+  var killed = gamejs.sprite.spriteCollide(this, $g.eLasers, true);
+  if (collide.length > 0 || killed.length > 0){
     console.log("Ship collided");
   }
 }
@@ -106,6 +106,12 @@ Laser.prototype.update = function(msDuration) {
   if ((pos[0] > $g.screen.right + 10) || (pos[0] < $g.screen.left - 10) || (pos[1] < $g.screen.top - 10) || (pos[1] > $g.screen.bot + 10)){
     console.log("Laser out of bounds");
     $g.lasers.remove(this);
+  }
+
+  var collide = gamejs.sprite.spriteCollide(this, $g.projectiles, true);
+  if (collide.length > 0){
+    // do something
+    console.log("Laser collided");
   }
 };
 
