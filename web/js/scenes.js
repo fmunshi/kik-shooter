@@ -105,14 +105,7 @@ GameScene.prototype.draw = function(display, msDuration) {
 GameScene.prototype.handle = function(event) {
 
   if(event.type === "deviceorientation") {
-    var absolute = event.absolute;
-    var alpha    = event.alpha;
-    var beta     = event.beta;
-    var gamma    = event.gamma;
-
-    // console.log([absolute, alpha, beta, gamma]);
-
-    this.player.move(gamma);    
+    if (Math.abs(event.gamma) > 2) this.player.move(event.gamma);
   }
 
   if (event.type === "touchstart"){
