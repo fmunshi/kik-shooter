@@ -106,6 +106,7 @@ GameScene.prototype.handle = function(event) {
 
   if(event.type === "deviceorientation") {
     if (Math.abs(event.gamma) > 2) this.player.move(event.gamma);
+    else this.player.move(0);
   }
 
   if (event.type === "touchstart"){

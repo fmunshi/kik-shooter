@@ -29,11 +29,11 @@ var Player = function(rect) {
   this.velocity = [0,0];
 
   this.stats = {
-    health    : 1,
+    health    : 100,
     damage    : 10,
   };
 
-  this.health = 1;
+  this.health = 100;
 
 
   // Rect stuff
