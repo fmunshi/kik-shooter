@@ -13,11 +13,13 @@ exports.images = {
 	eF5		: "./img/enemies/e_f5.png",
 	eF6		: "./img/enemies/e_f6.png",
 
+	bg 		: "./img/bg.gif",
+
 	laser 	: "./img/laser.png",
 	meteor 	: "./img/meteor.png",
-	E1 		: "./img/E1.png",
 	eLaser 	: "./img/eLaser.png"
 }
+
 exports.imageArray = [
 	"./img/player/f1.png",
 	"./img/player/f2.png",
@@ -31,10 +33,12 @@ exports.imageArray = [
 	"./img/enemies/e_f5.png",
 	"./img/enemies/e_f6.png",
 
+	"./img/bg.gif",
+
 	"./img/laser.png",
 	"./img/meteor.png",
-	"./img/E1.png",
 	"./img/eLaser.png"
+
 ]
 
 exports.screen = {

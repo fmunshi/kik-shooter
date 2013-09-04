@@ -28,6 +28,15 @@ var Player = function(rect) {
   this.size = rect;
   this.velocity = [0,0];
 
+  this.stats = {
+    health    : 100,
+    damage    : 10,
+  };
+
+
+
+  this.health = 100;
+
 
   // Rect stuff
   this.rect = new gamejs.Rect(rect);
@@ -83,7 +92,7 @@ Player.prototype.collide = function(){
   var collide = gamejs.sprite.spriteCollide(this, $g.projectiles, true);
   var killed = gamejs.sprite.spriteCollide(this, $g.eLasers, true);
   if (collide.length > 0 || killed.length > 0){
-    console.log("Ship collided");
+    this.health -= 10;
   }
 }
 
@@ -125,8 +134,8 @@ Laser.prototype.update = function(msDuration) {
 
   var collide = gamejs.sprite.spriteCollide(this, $g.projectiles, true);
   if (collide.length > 0){
-    // do something
-    console.log("Laser collided");
+    $g.lasers.remove(this);
+    $g.game.score += 5;
   }
 };
 

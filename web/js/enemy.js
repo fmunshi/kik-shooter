@@ -4,7 +4,7 @@ var $e = require("gamejs/event");
 var $m = require("gamejs/utils/math");
 
 
-var Enemy = function(rect, image) {
+var Enemy = function(rect) {
   // call superconstructor
   Enemy.superConstructor.apply(this, arguments);
 
@@ -18,7 +18,7 @@ var Enemy = function(rect, image) {
     gamejs.image.load($g.images.eF6),
   ];
 
-  this.image = gamejs.image.load(image);
+  this.image = gamejs.image.load($g.images.eF1);
 
   this.msPerFrame = 1000 / 1;
   this.msCurrent = 0;
@@ -94,8 +94,9 @@ Enemy.prototype.checkbounds = function(){
 Enemy.prototype.collide = function(){
   var collide = gamejs.sprite.spriteCollide(this, $g.projectiles, true);
   var killed = gamejs.sprite.spriteCollide(this, $g.lasers, true);
-  if (collide.length > 0 || killed.length > 0){
+  if (killed.length > 0){
     this.kill();
+    $g.game.score += 10;
   }
 };
 
