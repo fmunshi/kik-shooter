@@ -2,7 +2,7 @@ var gamejs = require("gamejs");
 var $g = require("globals");
 var $e = require("gamejs/event");
 
-var Proj = function(rect, image) {
+var Proj = function(rect, image, pos) {
   // call superconstructor
   Proj.superConstructor.apply(this, arguments);
   this.image = gamejs.image.load(image);
