@@ -63,6 +63,27 @@ Player.prototype.update = function(msDuration) {
   this.collide();
 };
 
+Player.prototype.handle = function(event){
+
+  if(event.type === "deviceorientation") {
+    if (Math.abs(event.gamma) > 3) this.move(event.gamma);
+    else this.move(0);
+  }
+
+  if (event.type === "touchstart"){
+    this.shoot();
+  }
+
+  if (event.type === gamejs.event.KEY_DOWN){
+    if (event.key === gamejs.event.K_a){
+      this.velocity = [this.velocity[0]-2, 0];
+    }
+    else if (event.key === gamejs.event.K_d){
+      this.velocity = [this.velocity[0]+2, 0];
+    }
+  }
+};
+
 Player.prototype.shoot = function() {
   var pos = this.pos;
   pos[1] -= 20;
@@ -125,8 +146,7 @@ Laser.prototype.update = function(msDuration) {
   this.rect.moveIp(this.velocity);
   var pos = this.pos = this.rect.center;
 
-  if ((pos[0] > $g.screen.right + 10) || (pos[0] < $g.screen.left - 10) || (pos[1] < $g.screen.top - 10) || (pos[1] > $g.screen.bot + 10)){
-    console.log("Laser out of bounds");
+  if ((pos[1] < $g.screen.top - 10) || (pos[1] > $g.screen.bot + 10)){
     $g.lasers.remove(this);
   }
 

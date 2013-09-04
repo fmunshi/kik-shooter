@@ -27,6 +27,7 @@ var GameScene = function(director) {
   this.player = $g.player = new $Player([29,64]);
 
   this.loading = true;
+  this.image = gamejs.image.load($g.images.bg);
 
   $g.lasers = new gamejs.sprite.Group();
   $g.enemies = new gamejs.sprite.Group();
@@ -45,27 +46,29 @@ var GameScene = function(director) {
 };
 
 GameScene.prototype.setup = function (lvl){
-  console.log(lvl);
   var that = this;
-   for (var i = 0; i < lvl; i++){
-      setTimeout(function(){
-        var proj = new $Proj([35,35], $g.images.meteor);
-        $g.projectiles.add(proj);  
-      }, 1000)
-   }
 
-   for (var i = 0; i < lvl; i++){
-      setTimeout(function(){
-        var enemy = new $Enemy([40,40], $g.images.E1);
+  setTimeout(function(){
+    for (var i = 0; i < lvl; i++){
+      var proj = new $Proj([68, 55], $g.images.meteor);
+      $g.projectiles.add(proj);  
+    }
+  }, 500);
+
+  setTimeout(function(){
+    for (var i = 0; i < lvl; i++){
+        var enemy = new $Enemy([40,40], $g.images["e" + String(i%5 + 1)]);
         $g.enemies.add(enemy);
         that.loading = false;
-      }, 1000)
-   }
+    }
+  }, 1000);
 
 }
 
 GameScene.prototype.draw = function(display, msDuration) {
-    display.fill('#403040');
+    display.fill('#101010');
+    display.blit(this.image, [0,0]);
+
     var font = new gamejs.font.Font('20px monospace');
     display.blit(font.render("Score: " + $g.game.score, '#FFF'), [10, 20]);
     display.blit(font.render("Wave: " + $g.game.level, '#FFF'), [10, 50]);
@@ -103,24 +106,7 @@ GameScene.prototype.draw = function(display, msDuration) {
 };
 
 GameScene.prototype.handle = function(event) {
-
-  if(event.type === "deviceorientation") {
-    if (Math.abs(event.gamma) > 2) this.player.move(event.gamma);
-    else this.player.move(0);
-  }
-
-  if (event.type === "touchstart"){
-    this.player.shoot();
-  }
-
-  if (event.type === gamejs.event.KEY_DOWN){
-    if (event.key === 37){
-      this.player.move(-5);
-    }
-    else if (event.key === 39){
-      this.player.move(5);
-    }
-  }
+  this.player.handle(event);
 };
 
 exports.StartScene = StartScene;

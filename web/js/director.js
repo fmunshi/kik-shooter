@@ -25,8 +25,6 @@ Director.prototype.handle = function(event) {
   if (!this.onAir) return;
   if (this.activeScene.handle) {
     this.activeScene.handle(event);
-  } else {
-    console.warn("Director handle, no map handle");
   }
 };
 

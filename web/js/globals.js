@@ -6,12 +6,11 @@ exports.images = {
 	playerF3: "./img/player/f3.png",
 	playerF4: "./img/player/f4.png",
 
-	eF1		: "./img/enemies/e_f1.png",
-	eF2		: "./img/enemies/e_f2.png",
-	eF3		: "./img/enemies/e_f3.png",
-	eF4		: "./img/enemies/e_f4.png",
-	eF5		: "./img/enemies/e_f5.png",
-	eF6		: "./img/enemies/e_f6.png",
+	e1		: "./img/enemies/e1.png",
+	e2		: "./img/enemies/e2.png",
+	e3		: "./img/enemies/e3.png",
+	e4		: "./img/enemies/e4.png",
+	e5		: "./img/enemies/e5.png",
 
 	bg 		: "./img/bg.gif",
 
@@ -26,12 +25,11 @@ exports.imageArray = [
 	"./img/player/f3.png",
 	"./img/player/f4.png",
 
-	"./img/enemies/e_f1.png",
-	"./img/enemies/e_f2.png",
-	"./img/enemies/e_f3.png",
-	"./img/enemies/e_f4.png",
-	"./img/enemies/e_f5.png",
-	"./img/enemies/e_f6.png",
+	"./img/enemies/e1.png",
+	"./img/enemies/e2.png",
+	"./img/enemies/e3.png",
+	"./img/enemies/e4.png",
+	"./img/enemies/e5.png",
 
 	"./img/bg.gif",
 

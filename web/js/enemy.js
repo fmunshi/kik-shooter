@@ -4,31 +4,17 @@ var $e = require("gamejs/event");
 var $m = require("gamejs/utils/math");
 
 
-var Enemy = function(rect) {
+var Enemy = function(rect, image) {
   // call superconstructor
   Enemy.superConstructor.apply(this, arguments);
 
-
-  this.frames = [
-    gamejs.image.load($g.images.eF1),
-    gamejs.image.load($g.images.eF2),
-    gamejs.image.load($g.images.eF3),
-    gamejs.image.load($g.images.eF4),
-    gamejs.image.load($g.images.eF5),
-    gamejs.image.load($g.images.eF6),
-  ];
-
-  this.image = gamejs.image.load($g.images.eF1);
-
-  this.msPerFrame = 1000 / 1;
-  this.msCurrent = 0;
-  this.frame = 0;
+  this.image = gamejs.image.load(image);
 
   // [x,y]
   this.pos = [Math.random()*$g.screen.right,$g.screen.top-10];
 
   this.size = rect;
-  this.velocity = [0,Math.random()*2];
+  this.velocity = [0,Math.random()*2 + 1];
 
   // Rect stuff
   this.rect = new gamejs.Rect(rect);
@@ -39,10 +25,10 @@ var Enemy = function(rect) {
   this.stats = {
     health    : 10,
     damage    : 10,
-    fireRate  : 1000
+    fireRate  : 3000
   };
 
-  this.fireRate = 1000;
+  this.fireRate = 3000;
 
   return this;
 };
@@ -51,19 +37,11 @@ gamejs.utils.objects.extend(Enemy, gamejs.sprite.Sprite);
 
 Enemy.prototype.update = function(msDuration) {
 
-  this.msCurrent += msDuration;
-  if (this.msCurrent > this.msPerFrame){
-    this.frame += 1;
-    if (this.frame > this.frames.length-1) this.frame = 0;
-    this.image = this.frames[this.frame];
-    this.msCurrent = 0;
-  }
-
 	this.rect.moveIp(this.velocity);
 	this.pos = this.rect.center;
   this.checkbounds();
   this.collide();
-  this.fireRate -= msDuration;
+
   if (this.fireRate < 0){
     this.shoot();
   }
@@ -87,7 +65,7 @@ Enemy.prototype.checkbounds = function(){
   var pos = this.pos
   if (pos[1] > $g.screen.bot){
     // bye bye
-    this.rect.center = this.pos = [Math.random()*$g.screen.right,$g.screen.top-10];
+    this.rect.center = this.pos = [pos[0],$g.screen.top-10];
   }
 };
 
@@ -116,7 +94,7 @@ var eLaser = function(pos, vel) {
   this.pos = pos
 
   this.size = size;
-  this.velocity = [0,Math.random()*10 + vel[1]];
+  this.velocity = [0, 3 + vel[1]];
 
 
   // Rect stuff

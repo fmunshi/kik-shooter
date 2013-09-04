@@ -13,7 +13,7 @@ var Proj = function(rect, image, pos) {
   this.pos = [Math.random()*$g.screen.right,$g.screen.top-10];
 
   this.size = rect;
-  this.velocity = [0,Math.random()*5 + 5];
+  this.velocity = [0, Math.random()*3 + 2];
 
 
   // Rect stuff
@@ -41,8 +41,8 @@ Proj.prototype.checkbounds = function(){
 	var pos = this.pos
 	if (pos[1] > $g.screen.bot){
 		// bye bye
-		this.rect.center = this.pos = [Math.random()*$g.screen.right,$g.screen.top-10];
-		// $g.projectiles.remove(this);
+		// this.rect.center = this.pos = [Math.random()*$g.screen.right,$g.screen.top-10];
+		$g.projectiles.remove(this);
 	}
 };
 
