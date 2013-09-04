@@ -28,7 +28,8 @@ gamejs.utils.objects.extend(Proj, gamejs.sprite.Sprite);
 
 
 Proj.prototype.update = function(msDuration) {
-	this.rect.moveIp(this.velocity);
+	var vel = [0, this.velocity[1]*msDuration/10]
+	this.rect.moveIp(vel);
 	this.pos = this.rect.center;
 	this.checkbounds();
 };

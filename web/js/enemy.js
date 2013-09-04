@@ -36,8 +36,9 @@ gamejs.utils.objects.extend(Enemy, gamejs.sprite.Sprite);
 
 
 Enemy.prototype.update = function(msDuration) {
-
-	this.rect.moveIp(this.velocity);
+  var vel = [0, this.velocity[1]*msDuration/30];
+  
+	this.rect.moveIp(vel);
 	this.pos = this.rect.center;
   this.checkbounds();
   this.collide();
@@ -111,7 +112,8 @@ gamejs.utils.objects.extend(eLaser, gamejs.sprite.Sprite);
 
 
 eLaser.prototype.update = function(msDuration) {
-  this.rect.moveIp(this.velocity);
+  var vel = [0, this.velocity[1]*msDuration/30];
+  this.rect.moveIp(vel);
   this.pos = this.rect.center;
   this.checkbounds();
 };

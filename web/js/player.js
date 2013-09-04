@@ -56,8 +56,8 @@ Player.prototype.update = function(msDuration) {
     this.image = this.frames[this.frame];
     this.msCurrent = 0;
   }
-
-	this.rect.moveIp(this.velocity);
+  var vel = [this.velocity[0]*msDuration/30, 0]
+	this.rect.moveIp(vel);
 	this.pos = this.rect.center;
   this.checkbounds();
   this.collide();
@@ -143,7 +143,8 @@ gamejs.utils.objects.extend(Laser, gamejs.sprite.Sprite);
 
 
 Laser.prototype.update = function(msDuration) {
-  this.rect.moveIp(this.velocity);
+  var vel = [0, this.velocity[1]*msDuration/30];
+  this.rect.moveIp(vel);
   var pos = this.pos = this.rect.center;
 
   if ((pos[1] < $g.screen.top - 10) || (pos[1] > $g.screen.bot + 10)){
