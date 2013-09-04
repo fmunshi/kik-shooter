@@ -1,9 +1,15 @@
 var gamejs = require('gamejs');
 
 exports.images = {
-	player 	: "./img/player.svg",
-	laser 	: "./img/laser.png"
+	player 	: "./img/player.png",
+	laser 	: "./img/laser.png",
+	meteor 	: "./img/meteor.png"
 }
+exports.imageArray = [
+	"./img/player.png",
+	"./img/laser.png",
+	"./img/meteor.png"
+]
 
 exports.screen = {
 	top	 		: 	0,
@@ -13,3 +19,7 @@ exports.screen = {
 }
 
 exports.lasers = new gamejs.sprite.Group();
+exports.enemies = new gamejs.sprite.Group();
+exports.projectiles = new gamejs.sprite.Group();
+
+exports.player;

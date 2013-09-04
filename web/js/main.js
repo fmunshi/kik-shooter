@@ -1,17 +1,17 @@
 (function (App) {
+
 	App.populator('Home', function (page) {
-		console.log('log');
+		// cards.browser.setOrientationLock('portrait');
 	});
 
 	App.populator('game', function (page) {
 		require.setModuleRoot("js/");
 		require.run("app");
-    	console.log('log');
 	});
 
 	try {
-		App.restore();
-		// App.load('Home');
+		// App.restore();
+		App.load('Home');
 	} catch (err) {
 		App.load('Home');
 	}
