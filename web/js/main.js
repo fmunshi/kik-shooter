@@ -1,9 +1,14 @@
-(function (App, cards) {
-
-	if (cards.browser) cards.browser.setOrientationLock('portrait');
+(function (App) {
+	
+	try {
+		cards.browser.setOrientationLock('portrait');
+	}
+	catch (err) {
+		console.log(err);
+	}
 
 	App.populator('Home', function (page) {
-		// cards.browser.setOrientationLock('portrait');
+	
 	});
 
 	App.populator('game', function (page) {
@@ -17,4 +22,4 @@
 	} catch (err) {
 		App.load('Home');
 	}
-})(App, cards);
+})(App);
