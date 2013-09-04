@@ -53,7 +53,7 @@ GameScene.prototype.setup = function (lvl){
     var proj = new $Proj([68, 55], $g.images.meteor);
     $g.projectiles.add(proj);  
     if (a > lvl) clearInterval(projId);
-  }, 1000);
+  }, 1500);
 
   var b = 0;
   var enemId = setInterval(function(){
@@ -64,7 +64,7 @@ GameScene.prototype.setup = function (lvl){
         clearInterval(enemId);
         that.loading = false;
       }
-  }, 1000);
+  }, 1500);
 
 }
 

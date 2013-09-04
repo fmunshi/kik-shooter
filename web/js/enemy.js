@@ -42,13 +42,15 @@ Enemy.prototype.update = function(msDuration) {
   this.checkbounds();
   this.collide();
 
+  this.fireRate -= msDuration;
+
   if (this.fireRate < 0){
     this.shoot();
   }
 };
 
 Enemy.prototype.shoot = function() {
-  this.fireRate = this.stats['fireRate']
+  this.fireRate = this.stats['fireRate'];
   var pos = this.pos;
   var velocity = this.velocity;
 	var laser = new eLaser(pos, velocity);
