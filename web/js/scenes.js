@@ -47,20 +47,23 @@ var GameScene = function(director) {
 
 GameScene.prototype.setup = function (lvl){
   var that = this;
+  var a = 0;
+  var projId = setInterval(function(){
+    a += 1
+    var proj = new $Proj([68, 55], $g.images.meteor);
+    $g.projectiles.add(proj);  
+    if (a > lvl) clearInterval(projId);
+  }, 1000);
 
-  setTimeout(function(){
-    for (var i = 0; i < lvl; i++){
-      var proj = new $Proj([68, 55], $g.images.meteor);
-      $g.projectiles.add(proj);  
-    }
-  }, 500);
-
-  setTimeout(function(){
-    for (var i = 0; i < lvl; i++){
-        var enemy = new $Enemy([40,40], $g.images["e" + String(i%5 + 1)]);
-        $g.enemies.add(enemy);
+  var b = 0;
+  var enemId = setInterval(function(){
+      b += 1
+      var enemy = new $Enemy([40,40], $g.images["e" + String(b%5 + 1)]);
+      $g.enemies.add(enemy);
+      if (b > lvl) {
+        clearInterval(enemId);
         that.loading = false;
-    }
+      }
   }, 1000);
 
 }
