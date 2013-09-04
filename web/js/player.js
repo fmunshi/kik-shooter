@@ -7,9 +7,20 @@ var $m = require("gamejs/utils/math");
 var Player = function(rect) {
   // call superconstructor
   Player.superConstructor.apply(this, arguments);
-  this.image = gamejs.image.load($g.images.player);
-  this.originalImage = gamejs.transform.scale(this.image, rect);
-  this.image = gamejs.transform.rotate(this.originalImage, 0);
+
+  this.frames = [
+    gamejs.image.load($g.images.playerF1),
+    gamejs.image.load($g.images.playerF2),
+    gamejs.image.load($g.images.playerF3),
+    gamejs.image.load($g.images.playerF4),
+  ];
+
+  //Current Frame
+  this.image = gamejs.image.load($g.images.playerF1);
+
+  this.msPerFrame = 1000 / 15;
+  this.msCurrent = 0;
+  this.frame = 0;
   
   // [x,y]
   this.pos = [$g.screen.right/2,$g.screen.bot-30];
@@ -30,15 +41,19 @@ gamejs.utils.objects.extend(Player, gamejs.sprite.Sprite);
 
 
 Player.prototype.update = function(msDuration) {
+
+  this.msCurrent += msDuration;
+  if (this.msCurrent > this.msPerFrame){
+    this.frame += 1;
+    if (this.frame > this.frames.length-1) this.frame = 0;
+    this.image = this.frames[this.frame];
+    this.msCurrent = 0;
+  }
+
 	this.rect.moveIp(this.velocity);
 	this.pos = this.rect.center;
   this.checkbounds();
   this.collide();
-};
-
-
-Player.prototype.handle = function(event){
-
 };
 
 Player.prototype.shoot = function() {

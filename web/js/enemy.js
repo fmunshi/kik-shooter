@@ -7,15 +7,28 @@ var $m = require("gamejs/utils/math");
 var Enemy = function(rect, image) {
   // call superconstructor
   Enemy.superConstructor.apply(this, arguments);
+
+
+  this.frames = [
+    gamejs.image.load($g.images.eF1),
+    gamejs.image.load($g.images.eF2),
+    gamejs.image.load($g.images.eF3),
+    gamejs.image.load($g.images.eF4),
+    gamejs.image.load($g.images.eF5),
+    gamejs.image.load($g.images.eF6),
+  ];
+
   this.image = gamejs.image.load(image);
-  this.originalImage = gamejs.transform.scale(this.image, rect);
-  this.image = gamejs.transform.rotate(this.originalImage, 0);
-  
+
+  this.msPerFrame = 1000 / 1;
+  this.msCurrent = 0;
+  this.frame = 0;
+
   // [x,y]
   this.pos = [Math.random()*$g.screen.right,$g.screen.top-10];
 
   this.size = rect;
-  this.velocity = [0,Math.random()*5 + 2];
+  this.velocity = [0,Math.random()*2 + 2];
 
   // Rect stuff
   this.rect = new gamejs.Rect(rect);
@@ -37,6 +50,15 @@ gamejs.utils.objects.extend(Enemy, gamejs.sprite.Sprite);
 
 
 Enemy.prototype.update = function(msDuration) {
+
+  this.msCurrent += msDuration;
+  if (this.msCurrent > this.msPerFrame){
+    this.frame += 1;
+    if (this.frame > this.frames.length-1) this.frame = 0;
+    this.image = this.frames[this.frame];
+    this.msCurrent = 0;
+  }
+
 	this.rect.moveIp(this.velocity);
 	this.pos = this.rect.center;
   this.checkbounds();
@@ -50,7 +72,8 @@ Enemy.prototype.update = function(msDuration) {
 Enemy.prototype.shoot = function() {
   this.fireRate = this.stats['fireRate']
   var pos = this.pos;
-	var laser = new eLaser(pos);
+  var velocity = this.velocity;
+	var laser = new eLaser(pos, velocity);
 	$g.eLasers.add(laser);
 };
 
@@ -80,7 +103,7 @@ Enemy.prototype.kill = function(){
   $g.enemies.remove(this);
 };
 
-var eLaser = function(pos) {
+var eLaser = function(pos, vel) {
   // call superconstructor
   var size = [10,10];
   eLaser.superConstructor.apply(this, arguments);
@@ -92,7 +115,7 @@ var eLaser = function(pos) {
   this.pos = pos
 
   this.size = size;
-  this.velocity = [0,Math.random()*10 + 5];
+  this.velocity = [0,Math.random()*10 + 5 + vel[1]];
 
 
   // Rect stuff
