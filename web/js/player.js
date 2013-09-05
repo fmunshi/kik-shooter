@@ -31,9 +31,11 @@ var Player = function(rect) {
   this.stats = {
     health    : 100,
     damage    : 10,
+    fireRate  : 750
   };
 
   this.health = 100;
+  this.firing = false;
 
 
   // Rect stuff
@@ -71,7 +73,7 @@ Player.prototype.handle = function(event){
   }
 
   if (event.type === "touchstart"){
-    this.shoot();
+    if (!this.firing) this.shoot();
   }
 
   if (event.type === gamejs.event.KEY_DOWN){
@@ -85,10 +87,16 @@ Player.prototype.handle = function(event){
 };
 
 Player.prototype.shoot = function() {
+  var that = this;
+  this.firing = true;
   var pos = this.pos;
   pos[1] -= 20;
 	var laser = new Laser(pos);
 	$g.lasers.add(laser);
+  var id = setTimeout(function(){
+    that.firing = false;
+    clearTimeout(id);
+  }, that.stats.fireRate);
 };
 
 
