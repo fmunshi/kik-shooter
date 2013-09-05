@@ -17,7 +17,7 @@ var StartScene = function(director) {
         var star = new $Star([15, 15], $g.images.star);
         $g.stars.add(star);  
         if (numOfStars > 5) clearInterval(starId);
-    }, 500);
+    }, 1500);
 
     this.player = $g.player = new $Player([29,64]);
 
