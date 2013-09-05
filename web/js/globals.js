@@ -12,7 +12,7 @@ exports.images = {
 	e4		: "./img/enemies/e4.png",
 	e5		: "./img/enemies/e5.png",
 
-	bg 		: "./img/bg.gif",
+	bg 		: "./img/bg.png",
 
 	laser 	: "./img/laser.png",
 	meteor 	: "./img/meteor.png",
@@ -33,7 +33,7 @@ exports.imageArray = [
 	"./img/enemies/e4.png",
 	"./img/enemies/e5.png",
 
-	"./img/bg.gif",
+	"./img/bg.png",
 
 	"./img/laser.png",
 	"./img/meteor.png",
@@ -53,7 +53,8 @@ exports.screen = {
 
 exports.game = {
 	score 		: 0,
-	level		: 1
+	level		: 1,
+	diff	 	: window.diff
 }
 
 exports.lasers = new gamejs.sprite.Group();
@@ -66,3 +67,7 @@ exports.player;
 
 exports.y1 = 0;
 exports.y2 = -1782;
+
+
+var canvas = exports.canvas = document.getElementById('gjs-canvas');
+var context = exports.context = canvas.getContext('2d');

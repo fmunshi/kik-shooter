@@ -1,7 +1,5 @@
 var gamejs = require("gamejs");
 var $g = require("globals");
-var $e = require("gamejs/event");
-var $m = require("gamejs/utils/math");
 
 
 var Enemy = function(rect, image) {
@@ -25,10 +23,10 @@ var Enemy = function(rect, image) {
   this.stats = {
     health    : 10,
     damage    : 10,
-    fireRate  : 3000
+    fireRate  : 3000/window.diff
   };
 
-  this.fireRate = 1500;
+  this.fireRate = 1500/window.diff;
 
   return this;
 };

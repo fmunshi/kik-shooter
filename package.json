@@ -1,14 +1,15 @@
 {
-  "name" : "starter-kit" ,
-  "version" : "0.0.1" ,
-  "engines" : {
-    "node" : "0.8.x" ,
-    "npm"  : "1.1.x"
+  "name": "kik-shooter",
+  "version": "0.0.1",
+  "engines": {
+    "node": "0.8.x",
+    "npm": "1.1.x"
   },
-  "dependencies" : {
-    "zerver" : "0.12.9"
+  "dependencies": {
+    "zerver": "0.12.9",
+    "mongoose": "~3.6.19"
   },
-  "scripts" : {
-  	"start" : "zerver --manifest=cache.manifest -r web"
+  "scripts": {
+    "start": "zerver --manifest=cache.manifest -r web"
   }
 }

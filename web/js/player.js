@@ -29,10 +29,20 @@ var Player = function(rect) {
   this.velocity = [0,0];
 
   this.stats = {
-    health    : 100,
-    damage    : 10,
-    fireRate  : 750
+    name        :   "anonymous",
+
+    fireRate    :   750,
+
+    maxHealth   :   100,
+    exp         :   100,
+    level       :   1,
+
+    highscore   :   0,
+    highlevel   :   1,
+    currentGame :   1
+
   };
+
 
   this.health = 100;
   this.firing = false;
@@ -79,8 +89,7 @@ Player.prototype.handle = function(event){
   if (event.type === gamejs.event.KEY_DOWN){
     if (event.key === gamejs.event.K_a){
       this.velocity = [this.velocity[0]-2, 0];
-    }
-    else if (event.key === gamejs.event.K_d){
+    } else if (event.key === gamejs.event.K_d){
       this.velocity = [this.velocity[0]+2, 0];
     }
   }

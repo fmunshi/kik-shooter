@@ -7,38 +7,40 @@ var $GameScene = require('scenes').GameScene;
 
 function main() {
 
-	   var display = gamejs.display.setMode([window.innerWidth, window.innerHeight]);
+	var display = gamejs.display.setMode([window.innerWidth, window.innerHeight]);
+	$g.game.diff = window.diff;
 
-	   var director = new $Director();
+	var director = new $Director();
 
-	   var firstScene = new $StartScene(director);
-	   director.start(firstScene);
+	var firstScene = new $StartScene(director);
+	director.start(firstScene);
 
-	   var font = new gamejs.font.Font('20px monospace');
+	var font = new gamejs.font.Font('20px monospace');
 
-	   var lastOrientationEvent, lastRenderedOrientationEvent;
+	var lastOrientationEvent, lastRenderedOrientationEvent;
 
-	   window.addEventListener("deviceorientation", function(event){
-		   	lastOrientationEvent = event;
-	   }, true);
+   	window.addEventListener("deviceorientation", function(event){
+	   	lastOrientationEvent = event;
+   	}, true);
 
-	   window.addEventListener("touchstart", function(event){
-	   		director.handle(event);
-	   }, false);
+   	window.addEventListener("touchstart", function(event){
+   		director.handle(event);
+   	}, false);
 
-	   gamejs.onEvent(function(event) {
-	   		director.handle(event);
-	   });
+   	gamejs.onEvent(function(event) {
+   		director.handle(event);
+   	});
 
-   		gamejs.onTick(function(msDuration) {
-			display.clear();
-			if (lastOrientationEvent !== lastRenderedOrientationEvent) {
-				lastRenderedOrientationEvent = lastOrientationEvent;
-		   		director.handle(lastOrientationEvent);
-		   	}
-	      	director.draw(display, msDuration);
-   		});
+	gamejs.onTick(function(msDuration) {
+		display.clear();
+		if (lastOrientationEvent !== lastRenderedOrientationEvent) {
+			lastRenderedOrientationEvent = lastOrientationEvent;
+	   		director.handle(lastOrientationEvent);
+	   	}
+    	director.draw(display, msDuration);
+	});
 	
 };
 gamejs.preload($g.imageArray);
 gamejs.ready(main);
+
