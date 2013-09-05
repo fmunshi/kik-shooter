@@ -2,15 +2,32 @@ var gamejs = require('gamejs');
 var $g = require('globals');
 var $Player = require('player').Player;
 var $Proj = require('projectile').Proj;
+var $Star = require('projectile').Star;
 var $Enemy = require('enemy').Enemy;
 
 var StartScene = function(director) {
     this.director = director;
+    this.image = gamejs.image.load($g.images.bg);
+
+    $g.stars = new gamejs.sprite.Group();
+    var numOfStars = 0;
+    var starId = setInterval(function(){
+      numOfStars += 1
+        var star = new $Star([15, 15], $g.images.star);
+        $g.stars.add(star);  
+        if (numOfStars > 10) clearInterval(starId);
+    }, 1500);
+
+    this.font = new gamejs.font.Font('20px monospace');
 
     this.draw = function(display, msDuration) {
-      display.fill('#545');
-      var font = new gamejs.font.Font('20px monospace');
-      display.blit(font.render("Touch to start"), [$g.right/2 - 10, $g.bot/2 - 10]);
+      display.fill('#101010');
+      display.blit(this.image, [0,0]);
+
+      $g.stars.draw(display);
+      $g.stars.update(msDuration);
+
+      display.blit(this.font.render("Touch to start", '#FFF0F0'), [$g.screen.right/2-100,$g.screen.bot/2]);
     };
 
     this.handle = function(event) {
@@ -76,14 +93,14 @@ GameScene.prototype.draw = function(display, msDuration) {
     display.blit(font.render("Score: " + $g.game.score, '#FFF'), [10, 20]);
     display.blit(font.render("Wave: " + $g.game.level, '#FFF'), [10, 50]);
 
-    if (this.player.health < 0) {
+    if ($g.player.health < 0) {
           var start = new StartScene(this.director);
           this.director.replaceScene(start);
     }
 
     // Update the player
-    this.player.update(msDuration);
-    this.player.draw(display);
+    $g.player.update(msDuration);
+    $g.player.draw(display);
 
     // Update the players lasers
     $g.lasers.update(msDuration);
@@ -100,6 +117,10 @@ GameScene.prototype.draw = function(display, msDuration) {
     $g.projectiles.update(msDuration);
     $g.projectiles.draw(display);
 
+
+    $g.stars.draw(display);
+    $g.stars.update(msDuration);
+
     if ($g.enemies.length() === 0 && $g.projectiles.length() === 0 && !this.loading) {
       $g.game.level += 1;
       this.loading = true;
@@ -109,7 +130,7 @@ GameScene.prototype.draw = function(display, msDuration) {
 };
 
 GameScene.prototype.handle = function(event) {
-  this.player.handle(event);
+  $g.player.handle(event);
 };
 
 exports.StartScene = StartScene;

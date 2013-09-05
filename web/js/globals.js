@@ -16,7 +16,9 @@ exports.images = {
 
 	laser 	: "./img/laser.png",
 	meteor 	: "./img/meteor.png",
-	eLaser 	: "./img/eLaser.png"
+	eLaser 	: "./img/eLaser.png",
+
+	star 	: "./img/star.png"
 }
 
 exports.imageArray = [
@@ -35,7 +37,9 @@ exports.imageArray = [
 
 	"./img/laser.png",
 	"./img/meteor.png",
-	"./img/eLaser.png"
+	"./img/eLaser.png",
+	
+	"./img/star.png"
 
 ]
 
@@ -56,5 +60,6 @@ exports.lasers = new gamejs.sprite.Group();
 exports.enemies = new gamejs.sprite.Group();
 exports.projectiles = new gamejs.sprite.Group();
 exports.eLasers = new gamejs.sprite.Group();
+exports.stars = new gamejs.sprite.Group();
 
 exports.player;

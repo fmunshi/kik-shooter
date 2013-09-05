@@ -48,4 +48,27 @@ Proj.prototype.checkbounds = function(){
 };
 
 
+
+var Star = function(rect, image, pos) {
+  // call superconstructor
+  Star.superConstructor.apply(this, arguments);
+  this.image = gamejs.image.load(image);
+  this.originalImage = gamejs.transform.scale(this.image, rect);
+  this.image = gamejs.transform.rotate(this.originalImage, Math.random()*90);
+
+  this.velocity = [0, 3];
+
+  return this;
+};
+gamejs.utils.objects.extend(Star, Proj);
+
+Star.prototype.checkbounds = function(){
+  var pos = this.pos
+  if (pos[1] > $g.screen.bot){
+    this.rect.center = this.pos = [Math.random()*$g.screen.right,$g.screen.top-10];
+  }
+};
+
+
 exports.Proj = Proj; 
+exports.Star = Star; 
