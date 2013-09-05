@@ -13,7 +13,7 @@ var Proj = function(rect, image, pos) {
   this.pos = [Math.random()*$g.screen.right,$g.screen.top-10];
 
   this.size = rect;
-  this.velocity = [0, 2];
+  this.velocity = [0, Math.random() + 2];
 
 
   // Rect stuff
@@ -28,7 +28,7 @@ gamejs.utils.objects.extend(Proj, gamejs.sprite.Sprite);
 
 
 Proj.prototype.update = function(msDuration) {
-	var vel = [0, this.velocity[1]*msDuration/10]
+	var vel = [0, this.velocity[1]*msDuration/30]
 	this.rect.moveIp(vel);
 	this.pos = this.rect.center;
 	this.checkbounds();
@@ -41,8 +41,6 @@ Proj.prototype.draw = function (display){
 Proj.prototype.checkbounds = function(){
 	var pos = this.pos
 	if (pos[1] > $g.screen.bot){
-		// bye bye
-		// this.rect.center = this.pos = [Math.random()*$g.screen.right,$g.screen.top-10];
 		$g.projectiles.remove(this);
 	}
 };

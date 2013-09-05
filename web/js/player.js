@@ -18,7 +18,7 @@ var Player = function(rect) {
   //Current Frame
   this.image = gamejs.image.load($g.images.playerF1);
 
-  this.msPerFrame = 1000 / 15;
+  this.msPerFrame = 1000 / 16;
   this.msCurrent = 0;
   this.frame = 0;
   
