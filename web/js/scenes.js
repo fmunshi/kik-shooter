@@ -15,8 +15,8 @@ var StartScene = function(director) {
       numOfStars += 1
         var star = new $Star([15, 15], $g.images.star);
         $g.stars.add(star);  
-        if (numOfStars > 10) clearInterval(starId);
-    }, 1500);
+        if (numOfStars > 6) clearInterval(starId);
+    }, 500);
 
     this.font = new gamejs.font.Font('20px monospace');
 

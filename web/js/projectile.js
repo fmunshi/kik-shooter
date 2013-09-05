@@ -13,7 +13,7 @@ var Proj = function(rect, image, pos) {
   this.pos = [Math.random()*$g.screen.right,$g.screen.top-10];
 
   this.size = rect;
-  this.velocity = [0, Math.random()*3 + 2];
+  this.velocity = [0, Math.random()*2 + 2];
 
 
   // Rect stuff
@@ -56,7 +56,7 @@ var Star = function(rect, image, pos) {
   this.originalImage = gamejs.transform.scale(this.image, rect);
   this.image = gamejs.transform.rotate(this.originalImage, Math.random()*90);
 
-  this.velocity = [0, 3];
+  this.velocity = [0, 2];
 
   return this;
 };
