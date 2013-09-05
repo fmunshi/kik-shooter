@@ -11,13 +11,13 @@ var StartScene = function(director) {
 
     $g.stars = new gamejs.sprite.Group();
 
-    var numOfStars = 0;
-    var starId = setInterval(function(){
-      numOfStars += 1
-        var star = new $Star([15, 15], $g.images.star);
-        $g.stars.add(star);  
-        if (numOfStars > 5) clearInterval(starId);
-    }, 500);
+    // var numOfStars = 0;
+    // var starId = setInterval(function(){
+    //   numOfStars += 1
+    //     var star = new $Star([15, 15], $g.images.star);
+    //     $g.stars.add(star);  
+    //     if (numOfStars > 5) clearInterval(starId);
+    // }, 500);
 
     this.player = $g.player = new $Player([29,64]);
 
