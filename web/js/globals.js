@@ -38,7 +38,7 @@ exports.imageArray = [
 	"./img/laser.png",
 	"./img/meteor.png",
 	"./img/eLaser.png",
-	
+
 	"./img/star.png"
 
 ]
@@ -63,3 +63,6 @@ exports.eLasers = new gamejs.sprite.Group();
 exports.stars = new gamejs.sprite.Group();
 
 exports.player;
+
+exports.y1 = 0;
+exports.y2 = -1782;

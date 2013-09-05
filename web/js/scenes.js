@@ -10,20 +10,33 @@ var StartScene = function(director) {
     this.image = gamejs.image.load($g.images.bg);
 
     $g.stars = new gamejs.sprite.Group();
+
     var numOfStars = 0;
     var starId = setInterval(function(){
       numOfStars += 1
         var star = new $Star([15, 15], $g.images.star);
         $g.stars.add(star);  
-        if (numOfStars > 6) clearInterval(starId);
+        if (numOfStars > 5) clearInterval(starId);
     }, 500);
+
+    this.player = $g.player = new $Player([29,64]);
 
     this.font = new gamejs.font.Font('20px monospace');
 
     this.draw = function(display, msDuration) {
       display.fill('#101010');
-      display.blit(this.image, [0,0]);
 
+      if ($g.y1 > 1781) $g.y1 = -1782;
+      if ($g.y2 > 1781) $g.y2 = -1782;
+
+      $g.y1 += 1;
+      $g.y2 += 1;
+
+      display.blit(this.image, [0,$g.y1]);
+      display.blit(this.image, [0,$g.y2]);
+
+      $g.player.draw(display);
+      $g.player.update(msDuration);
       $g.stars.draw(display);
       $g.stars.update(msDuration);
 
@@ -40,8 +53,6 @@ var StartScene = function(director) {
 
 var GameScene = function(director) {
   this.director = director;
-
-  this.player = $g.player = new $Player([29,64]);
 
   this.loading = true;
   this.image = gamejs.image.load($g.images.bg);
@@ -67,7 +78,7 @@ GameScene.prototype.setup = function (lvl){
   var a = 0;
   var projId = setInterval(function(){
     a += 1
-    var proj = new $Proj([68, 55], $g.images.meteor);
+    var proj = new $Proj([60, 50], $g.images.meteor);
     $g.projectiles.add(proj);  
     if (a > lvl) clearInterval(projId);
   }, 1500);
@@ -75,7 +86,7 @@ GameScene.prototype.setup = function (lvl){
   var b = 0;
   var enemId = setInterval(function(){
       b += 1
-      var enemy = new $Enemy([40,40], $g.images["e" + String(b%5 + 1)]);
+      var enemy = new $Enemy([35,35], $g.images["e" + String(b%5 + 1)]);
       $g.enemies.add(enemy);
       if (b > lvl) {
         clearInterval(enemId);
@@ -87,7 +98,15 @@ GameScene.prototype.setup = function (lvl){
 
 GameScene.prototype.draw = function(display, msDuration) {
     display.fill('#101010');
-    display.blit(this.image, [0,0]);
+    
+      if ($g.y1 > 1781) $g.y1 = -1782;
+      if ($g.y2 > 1781) $g.y2 = -1782;
+
+      $g.y1 += 1;
+      $g.y2 += 1;
+
+      display.blit(this.image, [0,$g.y1]);
+      display.blit(this.image, [0,$g.y2]);
 
     var font = new gamejs.font.Font('20px monospace');
     display.blit(font.render("Score: " + $g.game.score, '#FFF'), [10, 20]);
