@@ -29,8 +29,8 @@ var StartScene = function(director) {
       if ($g.y1 > 1781) $g.y1 = -1782;
       if ($g.y2 > 1781) $g.y2 = -1782;
 
-      $g.y1 += 1;
-      $g.y2 += 1;
+      $g.y1 += msDuration/30;
+      $g.y2 += msDuration/30;
 
       display.blit(this.image, [0,$g.y1]);
       display.blit(this.image, [0,$g.y2]);
@@ -102,8 +102,8 @@ GameScene.prototype.draw = function(display, msDuration) {
       if ($g.y1 > 1781) $g.y1 = -1782;
       if ($g.y2 > 1781) $g.y2 = -1782;
 
-      $g.y1 += 1;
-      $g.y2 += 1;
+      $g.y1 += msDuration/30;
+      $g.y2 += msDuration/30;
 
       display.blit(this.image, [0,$g.y1]);
       display.blit(this.image, [0,$g.y2]);

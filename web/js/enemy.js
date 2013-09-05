@@ -28,7 +28,7 @@ var Enemy = function(rect, image) {
     fireRate  : 3000
   };
 
-  this.fireRate = 3000;
+  this.fireRate = 1500;
 
   return this;
 };
