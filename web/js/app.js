@@ -16,13 +16,13 @@ function main() {
 
 	   var font = new gamejs.font.Font('20px monospace');
 
+	   var lastOrientationEvent, lastRenderedOrientationEvent;
+
 	   window.addEventListener("deviceorientation", function(event){
-	   		event.type = "tilt";
-	   		director.handle(event);
+		   	lastOrientationEvent = event;
 	   }, true);
 
 	   window.addEventListener("touchstart", function(event){
-	   		event.type = "touch";
 	   		director.handle(event);
 	   }, false);
 
@@ -32,6 +32,10 @@ function main() {
 
    		gamejs.onTick(function(msDuration) {
 			display.clear();
+			if (lastOrientationEvent !== lastRenderedOrientationEvent) {
+				lastRenderedOrientationEvent = lastOrientationEvent;
+		   		director.handle(lastOrientationEvent);
+		   	}
 	      	director.draw(display, msDuration);
    		});
 	

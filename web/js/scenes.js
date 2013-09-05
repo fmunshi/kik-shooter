@@ -11,13 +11,13 @@ var StartScene = function(director) {
 
     $g.stars = new gamejs.sprite.Group();
 
-    var numOfStars = 0;
-    var starId = setInterval(function(){
-      numOfStars += 1
-        var star = new $Star([15, 15], $g.images.star);
-        $g.stars.add(star);  
-        if (numOfStars > 5) clearInterval(starId);
-    }, 1500);
+    // var numOfStars = 0;
+    // var starId = setInterval(function(){
+    //   numOfStars += 1
+    //     var star = new $Star([15, 15], $g.images.star);
+    //     $g.stars.add(star);  
+    //     if (numOfStars > 5) clearInterval(starId);
+    // }, 1500);
 
     this.player = $g.player = new $Player([29,64]);
 
@@ -26,14 +26,14 @@ var StartScene = function(director) {
     this.draw = function(display, msDuration) {
       display.fill('#101010');
 
-      if ($g.y1 > 1781) $g.y1 = -1782;
-      if ($g.y2 > 1781) $g.y2 = -1782;
+      // if ($g.y1 > 1781) $g.y1 = -1782;
+      // if ($g.y2 > 1781) $g.y2 = -1782;
 
-      $g.y1 += msDuration/30;
-      $g.y2 += msDuration/30;
+      // $g.y1 += msDuration/30;
+      // $g.y2 += msDuration/30;
 
-      display.blit(this.image, [0,$g.y1]);
-      display.blit(this.image, [0,$g.y2]);
+      // display.blit(this.image, [0,$g.y1]);
+      // display.blit(this.image, [0,$g.y2]);
 
       $g.player.draw(display);
       $g.player.update(msDuration);
@@ -99,14 +99,14 @@ GameScene.prototype.setup = function (lvl){
 GameScene.prototype.draw = function(display, msDuration) {
     display.fill('#101010');
     
-      if ($g.y1 > 1781) $g.y1 = -1782;
-      if ($g.y2 > 1781) $g.y2 = -1782;
+      // if ($g.y1 > 1781) $g.y1 = -1782;
+      // if ($g.y2 > 1781) $g.y2 = -1782;
 
-      $g.y1 += msDuration/30;
-      $g.y2 += msDuration/30;
+      // $g.y1 += msDuration/30;
+      // $g.y2 += msDuration/30;
 
-      display.blit(this.image, [0,$g.y1]);
-      display.blit(this.image, [0,$g.y2]);
+      // display.blit(this.image, [0,$g.y1]);
+      // display.blit(this.image, [0,$g.y2]);
 
     var font = new gamejs.font.Font('20px monospace');
     display.blit(font.render("Score: " + $g.game.score, '#FFF'), [10, 20]);
