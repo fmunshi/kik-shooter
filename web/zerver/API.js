@@ -35,8 +35,8 @@ var UserSchema = new mongoose.Schema({
 });
 
 var User = mongoose.model('User', UserSchema);
-// user = User.find();
-// user.remove();
+user = User.find();
+user.remove();
 
 
 exports.createLogin = function (username, callback) {
@@ -45,18 +45,18 @@ exports.createLogin = function (username, callback) {
       if (err) console.log(err);
       else if (u === null) {
       	var newUser = new User({
-			name        :   username,
+    			name        :   username,
 
-			fireRate    :   100,
+    			fireRate    :   750,
 
-			maxHealth   :   1000,
-			exp         :   100,
-			level       :   1,
-			
-			highscore	: 	0,
-			highlevel	: 	0,
+    			maxHealth   :   100,
+    			exp         :   100,
+    			level       :   1,
+    			
+    			highscore	  : 	0,
+    			highlevel	  : 	1,
 
-			currentGame : 	0
+    			currentGame : 	1
         });
 
         newUser.save(function(err){
@@ -95,3 +95,19 @@ exports.getHigh = function (callback) {
 				.limit(10)
 				.exec(callback);
 };
+
+exports.updateUser = function(user, callback) {
+  User.findOne({ name: user.name }, function(err, u){
+
+    u.fireRate    = user.fireRate;
+    u.maxHealth   = user.maxHealth;
+    u.exp         = user.exp;
+    u.level       = user.level;
+    u.highscore   = user.highscore;
+    u.highlevel   = user.highlevel;
+    u.currentGame = user.currentGame;
+    u.save();
+
+    callback(u);
+  });
+}

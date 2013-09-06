@@ -18,6 +18,7 @@
 
 	    highscore   :   0,
 	    highlevel   :   1,
+
 	    currentGame :   1
     }
 
@@ -99,7 +100,8 @@
 			else {
 				console.log(users);
 				for (var i = 0; i < users.length; i++){
-					$('#highScores').append( $('<li/>', { text: users[i].name + ' ------ ' + users[i]['highscore'] }) );
+					console.log(users[i]);
+					$('#highscores').append( '<li>' + users[i].name + ' ------ ' + users[i]['highscore'] + '</li>' );
 				}
 				$('#loading').hide();
 			}

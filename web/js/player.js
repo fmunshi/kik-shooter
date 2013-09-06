@@ -28,6 +28,8 @@ var Player = function(rect) {
   this.size = rect;
   this.velocity = [0,0];
 
+  // These stats are just placeholders, they are never actually used
+
   this.stats = {
     name        :   "anonymous",
 

@@ -10,7 +10,8 @@ var StartScene = function(director) {
     this.bg = new Background();
 
     this.player = $g.player = new $Player([29,64]);
-    $g.player.stats = window.user
+    $g.player.stats = window.user;
+    $g.player.health = $g.player.stats.maxHealth;
 
     this.font = new gamejs.font.Font('20px monospace');
 
@@ -122,6 +123,18 @@ GameScene.prototype.draw = function(display, msDuration) {
 
     if ($g.enemies.length() === 0 && $g.projectiles.length() === 0 && !this.loading) {
       $g.game.level += 1;
+
+      console.log("LEVEL COMPLETED");
+
+      var stats = $g.player.stats;
+      if (stats.highscore < $g.game.score) stats.highscore = $g.game.score;
+      if (stats.highlevel < $g.game.level) stats.highlevel = $g.game.level;
+      stats.currentGame = $g.game.level;
+
+      API.updateUser($g.player.stats, function(user){
+        console.log(user);
+      });
+
       this.loading = true;
       this.setup($g.game.level);
       
