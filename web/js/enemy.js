@@ -21,8 +21,6 @@ var Enemy = function(rect, image) {
   this.rect.center = this.pos;
 
   this.stats = {
-    health    : 10,
-    damage    : 10,
     fireRate  : 3000/window.diff
   };
 

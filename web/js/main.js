@@ -12,9 +12,7 @@
 
 	    fireRate    :   750,
 
-	    maxHealth   :   100,
-	    exp         :   100,
-	    level       :   1,
+	    maxHealth   :   50,
 
 	    highscore   :   0,
 	    highlevel   :   1,

@@ -40,6 +40,37 @@ var StartScene = function(director) {
     };
   };
 
+var EndScene = function(director, bg) {
+
+    this.director = director;
+    this.bg = bg;
+
+    this.draw = function(display, msDuration) {
+      display.fill('#20102F');
+
+      this.bg.update(msDuration);
+      this.bg.draw(display);
+
+      $g.context.font = '20px monospace';
+      $g.context.textAlign = 'center';
+      $g.context.fillStyle = '#EEE';
+      $g.context.fillText('Game Over', $g.canvas.width / 2, $g.canvas.height / 2 - 45);
+      $g.context.fillText('Score: ' + $g.game.score, $g.canvas.width / 2, $g.canvas.height / 2 - 15);
+      $g.context.fillText('Level: ' + $g.game.level, $g.canvas.width / 2, $g.canvas.height / 2 + 15);
+      $g.context.fillText('Touch to play again', $g.canvas.width / 2, $g.canvas.height / 2 + 45);
+
+    };
+
+    this.handle = function(event) {
+      if (event.type === "touchstart"){
+          var pos = [event.targetTouches[0].pageX, event.targetTouches[0].pageY]
+          var game = new GameScene(this.director, this.bg);
+          this.director.replaceScene(game);
+      }
+    };
+
+}
+
 var GameScene = function(director, bg) {
   this.director = director;
   this.loading = true;
@@ -78,7 +109,7 @@ GameScene.prototype.setup = function (lvl){
       numOfEnemies += 1
       var enemy = new $Enemy([35,35], $g.images["e" + String(numOfEnemies%5 + 1)]);
       $g.enemies.add(enemy);
-      if (numOfEnemies > lvl) {
+      if (numOfEnemies > Math.ceil(lvl/2)) {
         clearInterval(enemId);
         that.loading = false;
       }
@@ -87,11 +118,20 @@ GameScene.prototype.setup = function (lvl){
 }
 
 GameScene.prototype.draw = function(display, msDuration) {
+  var that = this;
     display.fill('#20102F'); 
 
-    if ($g.player.health < 0) {
-      var restart = new StartScene(this.director)
-      this.director.replaceScene(restart);
+    if ($g.player.health <= 0) {
+
+      var stats = $g.player.stats;
+      stats.highlevel = $g.game.level;
+      stats.highscore = $g.game.score;
+      stats.currentGame = 1;
+
+      API.updateUser(stats, function(user){
+        var end = new EndScene(that.director, that.bg)
+        that.director.replaceScene(end);
+      });
     }
 
     // Update the background 
@@ -189,6 +229,8 @@ var Background = function(){
   }
 
   this.draw = function(display) {
+
+
     if (this.moving) {
       display.blit(this.image, [0,this.y1]);
       display.blit(this.image, [0,this.y2]);
@@ -199,6 +241,14 @@ var Background = function(){
       display.blit(this.image, [0,0]);
       display.blit(this.rightImage, [600,0]);
     }
+
+
+    var ratio =  $g.player.health / $g.player.stats.maxHealth;
+    var color = "#00AA00"
+    if (ratio < 0.3) color = "#AA0000"
+    else if (ratio < 0.6) color = "DDDD00"
+
+    gamejs.draw.rect(display, color, new gamejs.Rect([$g.screen.left, $g.screen.bot - 10], [$g.player.health / $g.player.stats.maxHealth * window.innerWidth, 20]), 0);
   }
 }
 

@@ -25,8 +25,6 @@ var UserSchema = new mongoose.Schema({
   fireRate   	:   Number,
 
   maxHealth  	:   Number,
-  exp      		:   Number,
-  level   		:   Number,
 
   highscore		:   Number,
   highlevel   	: 	Number,
@@ -49,9 +47,7 @@ exports.createLogin = function (username, callback) {
 
     			fireRate    :   750,
 
-    			maxHealth   :   100,
-    			exp         :   100,
-    			level       :   1,
+    			maxHealth   :   50,
     			
     			highscore	  : 	0,
     			highlevel	  : 	1,
@@ -91,7 +87,7 @@ exports.login = function (username, callback) {
 exports.getHigh = function (callback) {
 	var users = User
 				.find({})
-				.sort('highscore')
+				.sort('-highscore')
 				.limit(10)
 				.exec(callback);
 };
@@ -101,8 +97,6 @@ exports.updateUser = function(user, callback) {
 
     u.fireRate    = user.fireRate;
     u.maxHealth   = user.maxHealth;
-    u.exp         = user.exp;
-    u.level       = user.level;
     u.highscore   = user.highscore;
     u.highlevel   = user.highlevel;
     u.currentGame = user.currentGame;
