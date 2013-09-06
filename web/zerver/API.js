@@ -35,8 +35,8 @@ var UserSchema = new mongoose.Schema({
 });
 
 var User = mongoose.model('User', UserSchema);
-user = User.find();
-user.remove();
+// user = User.find();
+// user.remove();
 
 
 exports.createLogin = function (username, callback) {
