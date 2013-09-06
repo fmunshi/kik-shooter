@@ -3,3 +3,75 @@
 	display: none;
 }
 
+.app-page, .app-content {
+	background-image: url('../img/starBackground.png')!important;
+	background-repeat: repeat!important;
+}
+
+.space {
+	display: block;
+	width: 90%;
+	min-height: 75px;
+	margin: auto;
+	border-radius: 0;
+	border: 0;
+	margin: 5% auto 5% auto;
+	background: #40204F;
+	color: #FFF;
+	font-family: monospace;
+	font-size: 20px;
+	font-weight: bold;
+}
+.space:active {
+	background: #30103F;
+}
+
+.app-topbar {
+	background: #40204F!important;
+	min-height: 80px;
+	padding: auto;
+	line-height: 80px!important;
+	text-align: center;
+	font-size: 30px!important;
+	font-family: monospace;
+	font-weight: bold;
+	border: 0;
+	-webkit-box-shadow: none!important;
+	box-shadow: none!important;
+	text-align: center;
+}
+
+#highscores {
+	list-style: none;
+	border: 3px solid #40204F!important;
+	background: #60406F;
+	border-radius: 20px!important;
+	width: 90%;
+	margin: auto;
+	margin-top: 20px;
+	color: #FFF!important;
+	font-family: monospace;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#highscores li {
+	margin: 0;
+	padding: 10px;
+	text-align: center;
+	color: #FFF!important;
+	border-top: 3px solid #40204F!important;
+}
+
+#highscores:first-child  {
+	border-top: none!important;
+}
+
+.loading {
+	color: #FFF;
+}
+#back {
+	font-size: 15px!important;
+	float: left;
+	opacity: 0.9;
+}

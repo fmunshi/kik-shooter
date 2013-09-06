@@ -18,15 +18,13 @@
 
 		<div class="app-page" data-page="Home">
 			<div class="app-topbar">
-				<div class="app-title">Kik - Shooter</div>
+				Kik - Shooter
 			</div>
 			<div class="app-content">
-				<div class="app-section">
-					<div id = 'normal' class="app-button">Normal</div>
-					<div id = 'hard' class="app-button">Hard</div>
-					<div id = 'continue' class="app-button">Continue</div>
-					<div class="app-button" data-target="high">High Scores</div>
-				</div>
+				<button class = 'space' id = 'normal'>Normal</button>
+				<button class = 'space' id = 'hard'>Hard</button>
+				<button class = 'space' id = 'continue'>Continue</button>
+				<button class = 'space' id = 'high'>High Scores</button>
 			</div>
 		</div>
 
@@ -36,14 +34,12 @@
 
 		<div class = "app-page" data-page="high">
 			<div class="app-topbar">
-				<div class="app-button left" data-back="true">Back</div>
-				<div class="app-title">High Scores</div>
+				<span id = 'back' class="left">Back</span>
+					High Scores
 			</div>
 			<div class="app-content">
 				<div id = 'loading'> Loading </div>
-				<ul class="app-list" id = 'highscores'>
-					
-
+				<ul id = 'highscores'>
 				</ul>
 			</div>
 		</div>
@@ -55,6 +51,7 @@
     	<script src="lib/gamejs.min.js"></script>
 		<script src="http://cdn.kik.com/cards/0/cards.js"></script>
 		<script src="http://cdn.kik.com/app/1/app.js"></script>
-		<script src="/js/main.js"></script>
+		<!-- // <script src="/js/main.js"></script> -->
+		<script data-main="js/main" src="lib/require.js"></script>
 	</body>
 </html>

@@ -12,7 +12,7 @@ exports.images = {
 	e4		: "./img/enemies/e4.png",
 	e5		: "./img/enemies/e5.png",
 
-	bg 		: "./img/bg.png",
+	bg 		: "./img/starBackground.png",
 
 	laser 	: "./img/laser.png",
 	meteor 	: "./img/meteor.png",
@@ -33,7 +33,7 @@ exports.imageArray = [
 	"./img/enemies/e4.png",
 	"./img/enemies/e5.png",
 
-	"./img/bg.png",
+	"./img/starBackground.png",
 
 	"./img/laser.png",
 	"./img/meteor.png",

@@ -6,6 +6,14 @@
 	catch (err) {
 		console.log(err);
 	}
+
+
+	cards.browser.back(function () {
+       	require.reset();
+        return false;
+    });
+
+
 	// Set a default user
 	window.user = {
 	    name        :   "anonymous",
@@ -17,8 +25,11 @@
 	    highscore   :   0,
 	    highlevel   :   1,
 
-	    currentGame :   1
+	    currentGame :   1,
+	    currentScore:   0
     }
+
+    window.diff = 1;
 
 	App.populator('Home', function (page) {
 		$(page)
@@ -73,23 +84,30 @@
 
 			      console.log(user.username);
 
-					API.login(user.username, function (user) {
+					API.createLogin(user.username, function (user) {
 					    console.log(user);
 					    window.user = user;
+					    window.continue = true;
 					    App.load('game');
 					});
 			    });
 			});
+		$(page)
+		.find('#high')
+		.on('click', function(event){
+			App.load('high');
+		});
 	});
 
 	App.populator('game', function (page) {
 		require.setModuleRoot("js/");
 		require.run("app");
 
-		document.addEventListener("gameEnd",function(){
-			App.load('Home');
-		}, false);
-
+		$(page).on('appHide', function () {
+			require.reset();
+			require.setModuleRoot("js/");
+			require.run("app");
+  		});
 	});
 
 	App.populator('high', function (page){
@@ -99,11 +117,19 @@
 				console.log(users);
 				for (var i = 0; i < users.length; i++){
 					console.log(users[i]);
-					$('#highscores').append( '<li>' + users[i].name + ' ------ ' + users[i]['highscore'] + '</li>' );
+					$('#highscores').append( '<li>' + users[i].name + ': ' + users[i]['highscore'] + '</li>' );
 				}
 				$('#loading').hide();
+				$('#highscores li').first().css('border', 'none!important');
 			}
 		});
+
+		$(page)
+			.find('#back')
+			.on('click', function(event){
+				App.back();
+			});
+
 	});
 
 	try {

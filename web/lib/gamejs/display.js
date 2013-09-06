@@ -72,9 +72,9 @@ var _flags = 0;
 var getCanvas = function() {
    var displayCanvas = document.getElementById(CANVAS_ID);
    if (!displayCanvas) {
-      displayCanvas = document.createElement("canvas");
-      displayCanvas.setAttribute("id", CANVAS_ID);
-      document.body.appendChild(displayCanvas);
+      // displayCanvas = document.createElement("canvas");
+      // displayCanvas.setAttribute("id", CANVAS_ID);
+      // document.body.appendChild(displayCanvas);
    }
    return displayCanvas;
 };

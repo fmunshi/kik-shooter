@@ -16,20 +16,21 @@ mongoose.connect(uristring, function (err, res) {
 
 
 var UserSchema = new mongoose.Schema({
-  name        :   {
-    type      : String, 
-    required  : true, 
-    unique    : true
+  name  :   {
+      type      : String, 
+      required  : true, 
+      unique    : true
   },
 
-  fireRate   	:   Number,
+  fireRate   	  :   Number,
 
-  maxHealth  	:   Number,
+  maxHealth  	  :   Number,
 
-  highscore		:   Number,
-  highlevel   	: 	Number,
+  highscore		  :   Number,
+  highlevel     : 	Number,
 
-  currentGame 	: 	Number
+  currentGame 	: 	Number,
+  currentScore  :   Number
 });
 
 var User = mongoose.model('User', UserSchema);
@@ -52,7 +53,8 @@ exports.createLogin = function (username, callback) {
     			highscore	  : 	0,
     			highlevel	  : 	1,
 
-    			currentGame : 	1
+    			currentGame : 	1,
+          currentScore:   0
         });
 
         newUser.save(function(err){
@@ -70,20 +72,6 @@ exports.createLogin = function (username, callback) {
 
 }
 
-exports.login = function (username, callback) {
-	console.log(username);
-	var user = User.findOne({ name: username }, function(err, u){
-      if (err) console.log(err);
-      else if (u === null) {
-      	callback('User Does not exist');
-      } else {
-        console.log(u);
-        callback(u);
-      }
-  });
-};
-
-
 exports.getHigh = function (callback) {
 	var users = User
 				.find({})
@@ -94,12 +82,9 @@ exports.getHigh = function (callback) {
 
 exports.updateUser = function(user, callback) {
   User.findOne({ name: user.name }, function(err, u){
-
-    u.fireRate    = user.fireRate;
-    u.maxHealth   = user.maxHealth;
-    u.highscore   = user.highscore;
-    u.highlevel   = user.highlevel;
-    u.currentGame = user.currentGame;
+    for (prop in user){
+      if (prop !== '_id') u[prop] = user[prop];
+    }
     u.save();
 
     callback(u);

@@ -39,7 +39,9 @@ var Player = function(rect) {
 
     highscore   :   0,
     highlevel   :   1,
-    currentGame :   1
+    
+    currentGame :   1,
+    currentScore:   0
 
   };
 

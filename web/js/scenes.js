@@ -26,14 +26,13 @@ var StartScene = function(director) {
 
       $g.context.font = '20px monospace';
       $g.context.textAlign = 'center';
-      $g.context.fillStyle = '#EEE';
+      $g.context.fillStyle = '#FFF';
       $g.context.fillText('Touch to Start', $g.canvas.width / 2, $g.canvas.height / 2);
 
     };
 
     this.handle = function(event) {
       if (event.type === "touchstart"){
-          var pos = [event.targetTouches[0].pageX, event.targetTouches[0].pageY]
           var game = new GameScene(this.director, this.bg);
           this.director.replaceScene(game);
       }
@@ -53,7 +52,7 @@ var EndScene = function(director, bg) {
 
       $g.context.font = '20px monospace';
       $g.context.textAlign = 'center';
-      $g.context.fillStyle = '#EEE';
+      $g.context.fillStyle = '#FFF';
       $g.context.fillText('Game Over', $g.canvas.width / 2, $g.canvas.height / 2 - 45);
       $g.context.fillText('Score: ' + $g.game.score, $g.canvas.width / 2, $g.canvas.height / 2 - 15);
       $g.context.fillText('Level: ' + $g.game.level, $g.canvas.width / 2, $g.canvas.height / 2 + 15);
@@ -63,9 +62,17 @@ var EndScene = function(director, bg) {
 
     this.handle = function(event) {
       if (event.type === "touchstart"){
-          var pos = [event.targetTouches[0].pageX, event.targetTouches[0].pageY]
-          var game = new GameScene(this.director, this.bg);
-          this.director.replaceScene(game);
+        var that = this;
+          API.createLogin($g.player.stats.name, function (user) {
+                console.log(user);
+                window.user = user;
+                window.continue = false;
+                $g.player = new $Player([29,64]);
+                $g.player.stats = window.user;
+                $g.player.health = $g.player.stats.maxHealth;
+                var game = new GameScene(that.director, that.bg);
+                that.director.replaceScene(game);
+          });
       }
     };
 
@@ -84,12 +91,21 @@ var GameScene = function(director, bg) {
 
   console.log($g.enemies.length());
 
-  $g.game = {
-    score     : 0,
-    level     : 1
+  
+  if (window.continue) {
+    this.setup($g.player.stats.currentGame);
+    $g.game = {
+      score     : $g.player.stats.currentScore,
+      level     : $g.player.stats.currentGame
+    }
   }
-
-  this.setup(1);
+  else{
+    $g.game = {
+      score     : 0,
+      level     : 1
+    }
+    this.setup(1);
+  } 
 
 };
 
@@ -124,9 +140,10 @@ GameScene.prototype.draw = function(display, msDuration) {
     if ($g.player.health <= 0) {
 
       var stats = $g.player.stats;
-      stats.highlevel = $g.game.level;
-      stats.highscore = $g.game.score;
+      if (stats.highlevel < $g.game.level) stats.highlevel = $g.game.level;
+      if (stats.highscore < $g.game.score) stats.highscore = $g.game.score;
       stats.currentGame = 1;
+      stats.currentScore = 0;
 
       API.updateUser(stats, function(user){
         var end = new EndScene(that.director, that.bg)
@@ -138,9 +155,11 @@ GameScene.prototype.draw = function(display, msDuration) {
     this.bg.update(msDuration);
     this.bg.draw(display);
 
-    var font = new gamejs.font.Font('20px monospace');
-    display.blit(font.render("Score: " + $g.game.score, '#FFF'), [10, 20]);
-    display.blit(font.render("Wave: " + $g.game.level, '#FFF'), [10, 50]);
+    $g.context.font = '20px monospace';
+    $g.context.textAlign = 'left';
+    $g.context.fillStyle = '#FFF';
+    $g.context.fillText('Score: ' + $g.game.score, 10, 20);
+    $g.context.fillText('Level: ' + $g.game.level, 10, 50);
 
     // Update the player
     $g.player.update(msDuration);
@@ -164,12 +183,11 @@ GameScene.prototype.draw = function(display, msDuration) {
     if ($g.enemies.length() === 0 && $g.projectiles.length() === 0 && !this.loading) {
       $g.game.level += 1;
 
-      console.log("LEVEL COMPLETED");
-
       var stats = $g.player.stats;
       if (stats.highscore < $g.game.score) stats.highscore = $g.game.score;
       if (stats.highlevel < $g.game.level) stats.highlevel = $g.game.level;
       stats.currentGame = $g.game.level;
+      stats.currentScore = $g.game.score;
 
       API.updateUser($g.player.stats, function(user){
         console.log(user);
@@ -187,10 +205,13 @@ GameScene.prototype.handle = function(event) {
 
 
 var Background = function(){
+
+  this.i = 0;
+  while(this.i*254 < window.innerWidth + 100 && this.i*256 < window.innerHeight + 100) this.i++; 
+
   var that = this;
 
   this.image = gamejs.image.load($g.images.bg);
-  this.rightImage = gamejs.transform.rotate(this.image, 0);
 
   try {
     var os = cards.utils.platform.os;
@@ -204,9 +225,6 @@ var Background = function(){
     console.log(err)
   }
 
-  this.y1 = 0;
-  this.y2 = -1782;
-
   this.stars = new gamejs.sprite.Group();
     var numOfStars = 0;
     var starId = setInterval(function(){
@@ -215,40 +233,34 @@ var Background = function(){
         that.stars.add(star);  
         if (numOfStars > 5) clearInterval(starId);
   }, 1500);
+
   
   this.update = function(msDuration) {
-    if (this.moving){
-      if (this.y1 > 1781) this.y1 = -1782;
-      if (this.y2 > 1781) this.y2 = -1782;
-
-      this.y1 += msDuration/30;
-      this.y2 += msDuration/30;
-
-      this.stars.update(msDuration);
-    }
+    if (this.moving) this.stars.update(msDuration);
   }
 
   this.draw = function(display) {
 
+    var a = this.i;
+    var b = this.i;
 
-    if (this.moving) {
-      display.blit(this.image, [0,this.y1]);
-      display.blit(this.image, [0,this.y2]);
-      display.blit(this.rightImage, [600,this.y2]);
-      display.blit(this.rightImage, [600,this.y1]);
-      this.stars.draw(display);
-    } else {
-      display.blit(this.image, [0,0]);
-      display.blit(this.rightImage, [600,0]);
+    while (a >= 0){
+      while (b >= 0){
+        display.blit(this.image, [a*254, b*256]);
+        b--;
+      }
+      b = this.i;
+      a--;
     }
 
-
     var ratio =  $g.player.health / $g.player.stats.maxHealth;
-    var color = "#00AA00"
-    if (ratio < 0.3) color = "#AA0000"
+    var color = "#00DD00"
+    if (ratio < 0.3) color = "#DD0000"
     else if (ratio < 0.6) color = "DDDD00"
 
     gamejs.draw.rect(display, color, new gamejs.Rect([$g.screen.left, $g.screen.bot - 10], [$g.player.health / $g.player.stats.maxHealth * window.innerWidth, 20]), 0);
+
+    if (this.moving) this.stars.draw(display);
   }
 }
 

@@ -5,7 +5,7 @@ var $Director = require('director').Director;
 var $StartScene = require('scenes').StartScene;
 var $GameScene = require('scenes').GameScene;
 
-function main() {
+var main = window.main = function() {
 
 	var display = gamejs.display.setMode([window.innerWidth, window.innerHeight]);
 	$g.game.diff = window.diff;
@@ -23,7 +23,7 @@ function main() {
 	   	lastOrientationEvent = event;
    	}, true);
 
-   	window.addEventListener("touchstart", function(event){
+   	$g.canvas.addEventListener("touchstart", function(event){
    		director.handle(event);
    	}, false);
 
