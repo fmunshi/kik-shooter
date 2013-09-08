@@ -1,4 +1,25 @@
-(function (App) {
+require.config({
+    paths: {
+        zepto      	: 'lib/zepto',
+        underscore  : 'lib/underscore',
+        gamejs      : 'lib/gamejs/gamejs',
+    }
+});
+
+require(['zepto', 'gamejs', 'game/app', 'game/globals'], function($, gamejs, game, $g) {
+
+	var hideAll = function (){
+		$('#home-page').hide();
+		$('#game-page').hide();
+		$('#high-page').hide();
+	}
+
+	var loadGame = function(){
+		hideAll();
+		$('#game-page').show();
+		gamejs.preload($g.imageArray);
+		gamejs.ready(game);
+	}
 
 	try {
 		cards.browser.setOrientationLock('portrait');
@@ -6,13 +27,6 @@
 	catch (err) {
 		console.log(err);
 	}
-
-
-	cards.browser.back(function () {
-       	require.reset();
-        return false;
-    });
-
 
 	// Set a default user
 	window.user = {
@@ -32,13 +46,16 @@
     window.diff = 1;
 
 	App.populator('Home', function (page) {
+
 		$(page)
 			.find('#normal')
 			.on('click', function(event){
+				loadGame();
+				return;
 				cards.kik.getUser(function (user) {
 			      if ( !user ) {
 			         	window.diff = 1;
-						App.load('game');
+			         	loadGame();
 						return;
 			      }
 
@@ -48,7 +65,7 @@
 					console.log(user);
 					window.diff = 1;
 					window.user = user;
-					App.load('game');
+					loadGame();
 				});
 			});
 		});
@@ -59,7 +76,7 @@
 				cards.kik.getUser(function (user) {
 			      if ( !user ) {
 					window.diff = 2;
-					App.load('game');
+					loadGame();
 					return;
 			      }
 
@@ -68,7 +85,7 @@
 					console.log(user);
 					window.diff = 2
 					window.user = user;
-					App.load('game');
+					loadGame();
 				});
 			});
 		});
@@ -88,53 +105,49 @@
 					    console.log(user);
 					    window.user = user;
 					    window.continue = true;
-					    App.load('game');
+					    loadGame();
 					});
 			    });
 			});
+
+		// HIGH SCORE PAGE
+
 		$(page)
-		.find('#high')
-		.on('click', function(event){
-			App.load('high');
-		});
-	});
-
-	App.populator('game', function (page) {
-		require.setModuleRoot("js/");
-		require.run("app");
-
-		$(page).on('appHide', function () {
-			require.reset();
-			require.setModuleRoot("js/");
-			require.run("app");
-  		});
-	});
-
-	App.populator('high', function (page){
-		API.getHigh(function (err, users) {
-			if (err) console.log(err);
-			else {
-				console.log(users);
-				for (var i = 0; i < users.length; i++){
-					console.log(users[i]);
-					$('#highscores').append( '<li>' + users[i].name + ': ' + users[i]['highscore'] + '</li>' );
-				}
-				$('#loading').hide();
-				$('#highscores li').first().css('border', 'none!important');
-			}
+			.find('#high')
+			.on('click', function(event){
+				hideAll();
+				$('#high-page').show()
+				API.getHigh(function (err, users) {
+					if (err) console.log(err);
+					else {
+						console.log(users);
+						for (var i = 0; i < users.length; i++){
+							console.log(users[i]);
+							$('#highscores').append( '<li>' + users[i].name + ': ' + users[i]['highscore'] + '</li>' );
+						}
+						$('#loading').hide();
+						$('#highscores li').first().css('border', 'none!important');
+					}
+				});
 		});
 
 		$(page)
 			.find('#back')
 			.on('click', function(event){
-				App.back();
-			});
+				hideAll();
+				$('#loading').show();
+				$('#highscores').html('')
+				$('#home-page').show();
+		});
 
+		// END HIGH SCORE PAGE
 	});
 
 	try {
-		App.load('Home');
+		App.restore();
 	} catch (err) {
 		App.load('Home');
 	}
-})(App);
+
+
+});

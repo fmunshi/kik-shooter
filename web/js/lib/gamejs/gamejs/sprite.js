@@ -266,6 +266,12 @@ define(function (require, exports, module) {
         return this._sprites.forEach(callback, thisArg);
     };
 
+
+    Group.prototype.length = function() {
+        return this._sprites.length;
+    };
+
+
     /**
      * Check whether some sprite in this group passes a test. This is a shortcut
      * for `group.sprites().some(...)`.
