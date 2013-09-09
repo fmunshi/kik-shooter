@@ -1,57 +1,54 @@
 (function (App) {
 
+	var GLOBALS = window;
 
-	var hideAll = function (){
-		window.gameRunning = false;
+	GLOBALS.hideAll = function (){
 		$('#home-page').hide();
 		$('#game-page').hide();
 		$('#high-page').hide();
 		$('#highscores').html('')
+		GLOBALS.gameRunning = false;
 	}
 
-	var loadGame = function(){
+	GLOBALS.loadGame = function(){
 		hideAll();
-		window.gameRunning = true;
 		$('#game-page').show();
+		GLOBALS.gameRunning = true;
 	}
 
-	var loadHome = function() {
+	GLOBALS.loadHome = function() {
 		hideAll();
 		$('#home-page').show();
+		GLOBALS.gameRunning = false;
 	}
 
 	try {
 		cards.browser.back(loadHome);
+		cards.browser.setOrientationLock('portrait');
+		App.back = loadHome
 	} catch(err) {
 		App.back = loadHome
 	}
 
-
-	try {
-		cards.browser.setOrientationLock('portrait');
-	}
-	catch (err) {
-		console.log(err);
-	}
-
 	// Set a default user
-	window.user = {
-	    name        :   "anonymous",
+	GLOBALS.user = {
+	    name        	:   "anonymous",
 
-	    fireRate    :   750,
+	    fireRate    	:   750,
 
-	    maxHealth   :   50,
+	    maxHealth   	:   50,
 
-	    highscore   :   0,
-	    highlevel   :   1,
+	    highscore   	:   0,
+	    highlevel   	:   1,
 
-	    currentGame :   1,
-	    currentScore:   0
+	    currentGame 	:   1,
+	    currentScore	:   0,
+	    currentHealth	: 	100
 	}
 
-	window.diff = 1;
-
-	window.gameRunning = false;
+	GLOBALS.diff = 1;
+	GLOBALS.gameRunning = false;
+	GLOBALS.continue = false;
 
 	App.populator('Home', function (page) {
 
@@ -61,22 +58,19 @@
 		$(page)
 			.find('#normal')
 			.on('click', function(event){
-				loadGame();
-				return;
+				hideAll();
+				$('#loading').show();
 				cards.kik.getUser(function (user) {
 			      if ( !user ) {
-			         	window.diff = 1;
-			         	loadGame();
+			         	GLOBALS.diff = 1;
+			         	GLOBALS.loadGame();
 						return;
 			      }
 
-			      console.log(user.username);
-
 				API.createLogin(user.username, function (user) {
-					console.log(user);
-					window.diff = 1;
-					window.user = user;
-					loadGame();
+					GLOBALS.diff = 1;
+					GLOBALS.user = user;
+					GLOBALS.loadGame();
 				});
 			});
 		});
@@ -84,19 +78,19 @@
 		$(page)
 			.find('#hard')
 			.on('click', function(event){
+				hideAll();
+				$('#loading').show();
 				cards.kik.getUser(function (user) {
 			      if ( !user ) {
-					window.diff = 2;
-					loadGame();
-					return;
+					GLOBALS.diff = 2;
+					GLOBALS.loadGame();
 			      }
 
 
 				API.createLogin(user.username, function (user) {
-					console.log(user);
-					window.diff = 2
-					window.user = user;
-					loadGame();
+					GLOBALS.diff = 2
+					GLOBALS.user = user;
+					GLOBALS.loadGame();
 				});
 			});
 		});
@@ -104,30 +98,31 @@
 		$(page)
 			.find('#continue')
 			.on('click', function(event){
+				hideAll();
+				$('#loading').show();
 				cards.kik.getUser(function (user) {
 			      if ( !user ) {
 			          alert('You need an account to continue');
 			          return;
 			      }
 
-			      console.log(user.username);
-
 					API.createLogin(user.username, function (user) {
-					    console.log(user);
-					    window.user = user;
-					    window.continue = true;
-					    loadGame();
+					    GLOBALS.user = user;
+					    GLOBALS.continue = true;
+					    GLOBALS.loadGame();
 					});
 			    });
 			});
 
-		// HIGH SCORE PAGE
+		/*
+			HIGH SCORE PAGE
+		*/
 
 		$(page)
 			.find('#high')
 			.on('click', function(event){
 				hideAll();
-				$('#high-page').show()
+				$('#loading').show();
 				API.getHigh(function (err, users) {
 					if (err) console.log(err);
 					else {
@@ -137,7 +132,7 @@
 							$('#highscores').append( '<li>' + users[i].name + ': ' + users[i]['highscore'] + '</li>' );
 						}
 						$('#loading').hide();
-						$('#highscores li').first().css('border', 'none!important');
+						$('#high-page').show();
 					}
 				});
 		});
@@ -145,13 +140,16 @@
 		$(page)
 			.find('#back')
 			.on('click', function(event){
-				hideAll();
+				GLOBALS.hideAll();
 				$('#loading').show();
 				$('#highscores').html('')
 				$('#home-page').show();
 		});
 
-		// END HIGH SCORE PAGE
+		/* 
+			END HIGH SCORE PAGE
+		*/
+
 	});
 
 	try {
@@ -161,3 +159,18 @@
 	}
 
 })(App);
+
+
+
+CanvasRenderingContext2D.prototype.clear = 
+  CanvasRenderingContext2D.prototype.clear || function (preserveTransform) {
+    if (preserveTransform) {
+      this.save();
+      this.setTransform(1, 0, 0, 1, 0, 0);
+    }
+    this.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+    if (preserveTransform) {
+      this.restore();
+    }           
+};

@@ -1,4 +1,5 @@
 var gamejs = require('gamejs');
+var GLOBALS = window;
 
 	var images = exports.images = {
 		playerF1: "./img/player/f1.png",
@@ -18,7 +19,9 @@ var gamejs = require('gamejs');
 		meteor 	: "./img/meteor.png",
 		eLaser 	: "./img/eLaser.png",
 
-		star 	: "./img/star.png"
+		star 	: "./img/star.png",
+
+		settings: "./img/settings.png"
 	}
 
 	var imageArray = exports.imageArray = [
@@ -39,7 +42,9 @@ var gamejs = require('gamejs');
 		"./img/meteor.png",
 		"./img/eLaser.png",
 
-		"./img/star.png"
+		"./img/star.png",
+
+		"./img/settings.png"
 
 	]
 
@@ -54,7 +59,7 @@ var gamejs = require('gamejs');
 	var game = exports.game = {
 		score 		: 0,
 		level		: 1,
-		diff	 	: window.diff
+		diff	 	: GLOBALS.diff
 	}
 
 	var lasers = exports.lasers = new gamejs.sprite.Group();
@@ -68,3 +73,17 @@ var gamejs = require('gamejs');
 
 	var canvas = exports.canvas = document.getElementById('gjs-canvas');
 	var context = exports.context = canvas.getContext('2d');
+
+
+	GLOBALS.resetGame = function (){
+		game.score = 0;
+		game.level = 0;
+
+		lasers = new gamejs.sprite.Group();
+		enemies = new gamejs.sprite.Group();
+		projectiles = new gamejs.sprite.Group();
+		eLasers = new gamejs.sprite.Group();
+		stars = new gamejs.sprite.Group();
+		GLOBALS.continue = false
+		GLOBALS.gameRunning = false;
+	}

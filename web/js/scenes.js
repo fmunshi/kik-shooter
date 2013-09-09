@@ -4,6 +4,8 @@ var $Player = require('player');
 var $Proj = require('projectile');
 var $Enemy = require('enemy');
 
+var GLOBALS = window;
+
   var StartScene = function(director) {
       this.director = director;
       this.bg = new Background();
@@ -11,7 +13,7 @@ var $Enemy = require('enemy');
       this.context = this.canvas.getContext('2d');
 
       this.player = $g.player = new $Player.Player([29,64]);
-      $g.player.stats = window.user;
+      $g.player.stats = GLOBALS.user;
       $g.player.health = $g.player.stats.maxHealth;
 
       $g.game.score = 0;
@@ -69,10 +71,10 @@ var $Enemy = require('enemy');
           var that = this;
             API.createLogin($g.player.stats.name, function (user) {
                   console.log(user);
-                  window.user = user;
-                  window.continue = false;
+                  GLOBALS.user = user;
+                  GLOBALS.continue = false;
                   $g.player = new $Player.Player([29,64]);
-                  $g.player.stats = window.user;
+                  $g.player.stats = GLOBALS.user;
                   $g.player.health = $g.player.stats.maxHealth;
                   var game = new GameScene(that.director, that.bg);
                   that.director.replaceScene(game);
@@ -99,15 +101,15 @@ var $Enemy = require('enemy');
 
     console.log($g.enemies.length());
 
-    
-    if (window.continue) {
+    console.log("CONTINUE? : " + GLOBALS.continue)
+    if (GLOBALS.continue) {
       this.setup($g.player.stats.currentGame);
       $g.game = {
         score     : $g.player.stats.currentScore,
         level     : $g.player.stats.currentGame
       }
-    }
-    else {
+      $g.player.health = $g.player.currentHealth;
+    } else {
       $g.game = {
         score     : 0,
         level     : 1
@@ -142,9 +144,8 @@ var $Enemy = require('enemy');
   }
 
   GameScene.prototype.draw = function(display, msDuration) {
-    var that = this;
-      display.fill('#20102F'); 
-
+      var that = this;
+      display.fill('#20102F');
       if ($g.player.health <= 0) {
 
         var stats = $g.player.stats;
@@ -196,6 +197,7 @@ var $Enemy = require('enemy');
         if (stats.highlevel < $g.game.level) stats.highlevel = $g.game.level;
         stats.currentGame = $g.game.level;
         stats.currentScore = $g.game.score;
+        stats.currentHealth = $g.player.health;
 
         API.updateUser(stats, function(user){
           console.log(user);
@@ -208,9 +210,60 @@ var $Enemy = require('enemy');
   };
 
   GameScene.prototype.handle = function(event) {
+    if (event.type === "touchstart"){
+      var point = [event.changedTouches[0].pageX, event.changedTouches[0].pageY]
+      console.log(point)
+      if ( point[0] < window.innerWidth && point[0] > (window.innerWidth - 75) ) {
+        if ( point[1] < 75 && point[1] > 0 ) {
+          this.director.push(new SettingsScene(this.director, this.bg));
+        }
+      }
+    }
+    
     $g.player.handle(event);
   };
 
+
+var SettingsScene = function (director, bg){
+  this.director = director;
+  this.bg = bg
+
+  this.draw = function (display, msDuration){
+      this.bg.update(msDuration);
+      this.bg.draw(display); 
+
+      $g.context.font = '30px monospace';
+      $g.context.textAlign = 'center';
+      $g.context.fillStyle = '#FFF';
+      $g.context.fillText('Continue?', $g.canvas.width / 2, $g.canvas.height / 2 - 30);
+      $g.context.fillText('Quit?', $g.canvas.width / 2, $g.canvas.height / 2 + 30);
+  };
+
+  this.handle = function (event){
+    if (event.type === "touchstart"){
+      var point = [event.changedTouches[0].pageX, event.changedTouches[0].pageY]
+      console.log(point)
+      if (point[1] > $g.canvas.height / 2 - 60 && point[1] < $g.canvas.height / 2) {
+        this.director.pop();
+      } else if (point[1] < $g.canvas.height / 2 + 60 && point[1] > $g.canvas.height / 2){
+        
+        director.popAll();
+        GLOBALS.hideAll();
+        GLOBALS.resetGame();
+
+        setTimeout(function(){
+          GLOBALS.loadHome();
+        },100)
+        
+      
+        var firstScene = new StartScene(this.director);
+        this.director.start(firstScene); 
+      }
+    }
+    
+  }
+
+}
 
   var Background = function(){
 
@@ -220,6 +273,8 @@ var $Enemy = require('enemy');
     var that = this;
 
     this.image = gamejs.image.load($g.images.bg);
+    this.settings = gamejs.image.load($g.images.settings);
+    this.settings = gamejs.transform.scale(this.settings, [50,50])
 
     try {
       var os = cards.utils.platform.os;
@@ -260,6 +315,7 @@ var $Enemy = require('enemy');
         b = this.i;
         a--;
       }
+      display.blit(this.settings, [window.innerWidth-50, 0])
 
       var ratio =  $g.player.health / $g.player.stats.maxHealth;
       var color = "#00DD00"

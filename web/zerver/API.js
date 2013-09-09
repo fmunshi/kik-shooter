@@ -30,7 +30,9 @@
     highlevel     : 	Number,
 
     currentGame 	: 	Number,
-    currentScore  :   Number
+    currentScore  :   Number,
+
+    currentHealth :   Number
   });
 
   var User = mongoose.model('User', UserSchema);
@@ -43,17 +45,18 @@
           if (err) console.log(err);
           else if (u === null) {
             var newUser = new User({
-              name        :   username,
+              name          :   username,
 
-              fireRate    :   750,
+              fireRate      :   750,
 
-              maxHealth   :   50,
+              maxHealth     :   50,
               
-              highscore   :   0,
-              highlevel   :   1,
+              highscore     :   0,
+              highlevel     :   1,
 
-              currentGame :   1,
-              currentScore:   0
+              currentGame   :   1,
+              currentScore  :   0,
+              currentHealth :   100
             });
 
             newUser.save(function(err){
