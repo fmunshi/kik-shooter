@@ -12,6 +12,7 @@ require(['zepto', 'gamejs', 'game/app', 'game/globals'], function($, gamejs, gam
 		$('#home-page').hide();
 		$('#game-page').hide();
 		$('#high-page').hide();
+		$('#highscores').html('')
 	}
 
 	var loadGame = function(){
@@ -20,6 +21,18 @@ require(['zepto', 'gamejs', 'game/app', 'game/globals'], function($, gamejs, gam
 		gamejs.preload($g.imageArray);
 		gamejs.ready(game);
 	}
+
+	var loadHome = function() {
+		hideAll();
+		$('#home-page').show();
+	}
+
+	try {
+		cards.browser.back(loadHome);
+	} catch(err) {
+		App.back = loadHome
+	}
+
 
 	try {
 		cards.browser.setOrientationLock('portrait');

@@ -194,7 +194,7 @@ define(['gamejs', 'game/globals', 'game/player', 'game/projectile', 'game/enemy'
         stats.currentGame = $g.game.level;
         stats.currentScore = $g.game.score;
 
-        API.updateUser($g.player.stats, function(user){
+        API.updateUser(stats, function(user){
           console.log(user);
         });
 

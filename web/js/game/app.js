@@ -24,6 +24,8 @@ define(['zepto', 'underscore', 'gamejs', 'game/globals', 'game/director', 'game/
 
 		   	var gameEnd = function(){
 		   		director.popAll();
+		   		$('#loading').show();
+				$('#highscores').html('')
 				$('#game-page').hide();
 				$('#home-page').show();
 				$g.game.score = 0;
