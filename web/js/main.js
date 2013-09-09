@@ -1,14 +1,8 @@
-require.config({
-    paths: {
-        zepto      	: 'lib/zepto',
-        underscore  : 'lib/underscore',
-        gamejs      : 'lib/gamejs/gamejs',
-    }
-});
+(function (App) {
 
-require(['zepto', 'gamejs', 'game/app', 'game/globals'], function($, gamejs, game, $g) {
 
 	var hideAll = function (){
+		window.gameRunning = false;
 		$('#home-page').hide();
 		$('#game-page').hide();
 		$('#high-page').hide();
@@ -17,9 +11,8 @@ require(['zepto', 'gamejs', 'game/app', 'game/globals'], function($, gamejs, gam
 
 	var loadGame = function(){
 		hideAll();
+		window.gameRunning = true;
 		$('#game-page').show();
-		gamejs.preload($g.imageArray);
-		gamejs.ready(game);
 	}
 
 	var loadHome = function() {
@@ -54,11 +47,16 @@ require(['zepto', 'gamejs', 'game/app', 'game/globals'], function($, gamejs, gam
 
 	    currentGame :   1,
 	    currentScore:   0
-    }
+	}
 
-    window.diff = 1;
+	window.diff = 1;
+
+	window.gameRunning = false;
 
 	App.populator('Home', function (page) {
+
+		require.setModuleRoot("js/");
+		require.run("app");
 
 		$(page)
 			.find('#normal')
@@ -162,5 +160,4 @@ require(['zepto', 'gamejs', 'game/app', 'game/globals'], function($, gamejs, gam
 		App.load('Home');
 	}
 
-
-});
+})(App);
