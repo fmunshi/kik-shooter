@@ -44,8 +44,9 @@
       var user = User.findOne({ name: username }, function(err, u){
           if (err) console.log(err);
           else if (u === null) {
+            if (username === null) username = 'anonymous';
             var newUser = new User({
-              name          :   username,
+              name          :   anonymous,
 
               fireRate      :   750,
 
@@ -84,6 +85,11 @@
       User.findOne({ name: user.name }, function(err, u){
         for (prop in user){
           if (prop !== '_id') u[prop] = user[prop];
+        }
+        if (u.name === 'anonymous'){
+          u.currentGame = 1;
+          u.currentScore = 0;
+          u.currentHealth = 100;
         }
         u.save();
 
