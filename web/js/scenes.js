@@ -20,7 +20,8 @@ var GLOBALS = window;
       $g.game.level = 1;
 
       this.draw = function(display, msDuration) {
-        display.fill('#20102F');
+        this.context.fillStyle = '#20102F';
+        this.context.fillRect(0, 0, window.innerWidth,  window.innerHeight);
 
         this.bg.update(msDuration);
         this.bg.draw(display);

@@ -8,10 +8,6 @@ var GLOBALS = window;
 
 var main = function(){
 
-		// var img = document.createElement('img');
-		// $('#game-page').append(img);
-		// $('#gjs-canvas').hide();
-
 		var display = gamejs.display.setMode([window.innerWidth, window.innerHeight]);
 		$g.game.diff = GLOBALS.diff;
 
@@ -55,9 +51,7 @@ var main = function(){
 		   		director.handle(lastOrientationEvent);
 		   	}
 	    	director.draw(display, msDuration);
-			// img.src = $g.canvas.toDataURL('img/png');
-			// img.width = window.innerWidth;
-			// img.height = window.innerHeight;
+
 	    });
 };
 
