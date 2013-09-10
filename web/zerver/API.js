@@ -36,8 +36,8 @@
   });
 
   var User = mongoose.model('User', UserSchema);
-  // user = User.find();
-  // user.remove();
+  user = User.find();
+  user.remove();
 
     exports.createLogin = function (username, callback) {
 
@@ -46,7 +46,7 @@
           else if (u === null) {
             if (username === null) username = 'anonymous';
             var newUser = new User({
-              name          :   anonymous,
+              name          :   'anonymous',
 
               fireRate      :   750,
 
