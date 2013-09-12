@@ -6,6 +6,7 @@
 		<meta name="description" content="Space">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<meta name="kik-prefer" content="true">
+		<meta name="kik-canvas-fix" content="true">
 		<link rel="kik-icon" href="/img/icon.png">
 
 		<!-- Styles -->
@@ -15,6 +16,8 @@
 
 	<body>
 		<!-- Pages -->
+		<canvas style="position:fixed;top:-1000%;left:-1000%;" id="canvas-hack"></canvas>
+
 
 		<div class="app-page" data-page="Home">
 			<span id = 'home-page'>
@@ -70,5 +73,32 @@
     	<script src="http://cdn.kik.com/cards/0/cards.js"></script>
 		<script src="http://cdn.kik.com/app/1/app.js"></script>
 		<script src="js/main.js"></script>
+		<script src="js/globals.js"></script>
+		<script>
+			$(document).ready(function(){
+				function hack() {
+					var canvas = document.getElementById('canvas-hack');
+					canvas.width = window.innerWidth;
+					canvas.height = window.innerHeight;
+					g = canvas.getContext("2d");
+
+					var move = function(x, y){
+					    g.fillStyle = '#ff0000';
+					    g.beginPath();
+						g.moveTo(x, y);
+						g.arc(x, y, 10, 0, Math.PI * 2, false);
+					    g.fill();
+					}
+
+					var i  = 0;
+					var id = setInterval(function(){
+				 		i++; 
+				 		move(Math.random()*window.innerWidth, Math.random()*window.innerHeight);
+				 		if (i > 500) clearInterval(id);
+					}, 10)
+				};
+				hack();
+			});
+		</script>
 	</body>
 </html>

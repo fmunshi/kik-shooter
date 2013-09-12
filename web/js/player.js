@@ -1,27 +1,26 @@
-
 var gamejs = require('gamejs');
-var $g = require('globals');
+var GLOBALS = window.GLOBALS;
 
   var Player = function(rect) {
     // call superconstructor
     Player.superConstructor.apply(this, arguments);
 
     this.frames = [
-      gamejs.image.load($g.images.playerF1),
-      gamejs.image.load($g.images.playerF2),
-      gamejs.image.load($g.images.playerF3),
-      gamejs.image.load($g.images.playerF4),
+      gamejs.image.load(GLOBALS.images.playerF1),
+      gamejs.image.load(GLOBALS.images.playerF2),
+      gamejs.image.load(GLOBALS.images.playerF3),
+      gamejs.image.load(GLOBALS.images.playerF4),
     ];
 
     // Current Frame
-    this.image = gamejs.image.load($g.images.playerF1);
+    this.image = gamejs.image.load(GLOBALS.images.playerF1);
 
     this.msPerFrame = 1000 / 16;
     this.msCurrent = 0;
     this.frame = 0;
     
     // [x,y]
-    this.pos = [$g.screen.right/2,$g.screen.bot-50];
+    this.pos =  [GLOBALS.screen.right/2, GLOBALS.screen.bot-50];
 
     this.size = rect;
     this.velocity = [0,0];
@@ -101,7 +100,7 @@ var $g = require('globals');
     var pos = this.pos;
     pos[1] -= 20;
   	var laser = new Laser(pos);
-  	$g.lasers.add(laser);
+   GLOBALS.lasers.add(laser);
     var id = setTimeout(function(){
       that.firing = false;
       clearTimeout(id);
@@ -119,14 +118,14 @@ var $g = require('globals');
 
   Player.prototype.checkbounds = function(){
     var pos = this.rect.center;
-    if (pos[0] > $g.screen.right+5)     this.rect.center =  [$g.screen.left, pos[1]];
-    else if (pos[0] < $g.screen.left-5) this.rect.center = [$g.screen.right, pos[1]];
+    if (pos[0] > GLOBALS.screen.right+5)     this.rect.center =  [GLOBALS.screen.left, pos[1]];
+    else if (pos[0] < GLOBALS.screen.left-5) this.rect.center =  [GLOBALS.screen.right, pos[1]];
     this.pos = this.rect.center;
   };
 
   Player.prototype.collide = function(){
-    var collide = gamejs.sprite.spriteCollide(this, $g.projectiles, true);
-    var killed = gamejs.sprite.spriteCollide(this, $g.eLasers, true);
+    var collide = gamejs.sprite.spriteCollide(this, GLOBALS.projectiles, true);
+    var killed = gamejs.sprite.spriteCollide(this, GLOBALS.eLasers, true);
     if (collide.length > 0 || killed.length > 0){
       this.health -= 10;
     }
@@ -137,7 +136,7 @@ var $g = require('globals');
     // call superconstructor
     var size = [5, 25];
     Laser.superConstructor.apply(this, arguments);
-    this.image = gamejs.image.load($g.images.laser);
+    this.image = gamejs.image.load(GLOBALS.images.laser);
     this.originalImage = gamejs.transform.scale(this.image, size);
     this.image = gamejs.transform.rotate(this.originalImage, 0);
     
@@ -164,14 +163,14 @@ var $g = require('globals');
     this.rect.moveIp(vel);
     var pos = this.pos = this.rect.center;
 
-    if ((pos[1] < $g.screen.top - 10) || (pos[1] > $g.screen.bot + 10)){
-      $g.lasers.remove(this);
+    if ((pos[1] < GLOBALS.screen.top - 10) || (pos[1] > GLOBALS.screen.bot + 10)){
+      GLOBALS.lasers.remove(this);
     }
 
-    var collide = gamejs.sprite.spriteCollide(this, $g.projectiles, true);
+    var collide = gamejs.sprite.spriteCollide(this, GLOBALS.projectiles, true);
     if (collide.length > 0){
-      $g.lasers.remove(this);
-      $g.game.score += 5;
+      GLOBALS.lasers.remove(this);
+      GLOBALS.score += 5;
     }
   };
 

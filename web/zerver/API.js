@@ -44,9 +44,12 @@
       var user = User.findOne({ name: username }, function(err, u){
           if (err) console.log(err);
           else if (u === null) {
-            if (username === null) username = 'anonymous';
+            if (username === null) {
+              callback(null);
+              return;
+            }
             var newUser = new User({
-              name          :   'anonymous',
+              name          :   username,
 
               fireRate      :   750,
 

@@ -1,6 +1,5 @@
-
+var GLOBALS = window.GLOBALS;
 var gamejs = require('gamejs');
-var $g = require('globals');
 
   var Enemy = function(rect, image) {
     // call superconstructor
@@ -9,7 +8,7 @@ var $g = require('globals');
     this.image = gamejs.image.load(image);
 
     // [x,y]
-    this.pos = [Math.random()*$g.screen.right,$g.screen.top-10];
+    this.pos = [Math.random()*GLOBALS.screen.right,GLOBALS.screen.top-10];
 
     this.size = rect;
     this.velocity = [0,Math.random()*2 + 1];
@@ -21,10 +20,10 @@ var $g = require('globals');
     this.rect.center = this.pos;
 
     this.stats = {
-      fireRate  : 3000/window.diff
+      fireRate  : 3000/GLOBALS.difficulty
     };
 
-    this.fireRate = 1500/window.diff;
+    this.fireRate = 1500/GLOBALS.difficulty;
 
     return this;
   };
@@ -51,7 +50,7 @@ var $g = require('globals');
     var pos = this.pos;
     var velocity = this.velocity;
   	var laser = new eLaser(pos, velocity);
-  	$g.eLasers.add(laser);
+  	GLOBALS.eLasers.add(laser);
   };
 
 
@@ -62,30 +61,30 @@ var $g = require('globals');
 
   Enemy.prototype.checkbounds = function(){
     var pos = this.pos
-    if (pos[1] > $g.screen.bot){
+    if (pos[1] > GLOBALS.screen.bot){
       // bye bye
-      this.rect.center = this.pos = [pos[0],$g.screen.top-10];
+      this.rect.center = this.pos = [pos[0],GLOBALS.screen.top-10];
     }
   };
 
   Enemy.prototype.collide = function(){
-    var collide = gamejs.sprite.spriteCollide(this, $g.projectiles, true);
-    var killed = gamejs.sprite.spriteCollide(this, $g.lasers, true);
+    var collide = gamejs.sprite.spriteCollide(this, GLOBALS.projectiles, true);
+    var killed = gamejs.sprite.spriteCollide(this, GLOBALS.lasers, true);
     if (killed.length > 0){
       this.kill();
-      $g.game.score += 10;
+      GLOBALS.score += 10;
     }
   };
 
   Enemy.prototype.kill = function(){
-    $g.enemies.remove(this);
+    GLOBALS.enemies.remove(this);
   };
 
   var eLaser = function(pos, vel) {
     // call superconstructor
     var size = [10,10];
     eLaser.superConstructor.apply(this, arguments);
-    this.image = gamejs.image.load($g.images.eLaser);
+    this.image = gamejs.image.load(GLOBALS.images.eLaser);
     this.originalImage = gamejs.transform.scale(this.image, size);
     this.image = gamejs.transform.rotate(this.originalImage, 0);
     
@@ -120,9 +119,9 @@ var $g = require('globals');
 
   eLaser.prototype.checkbounds = function(){
     var pos = this.pos
-    if (pos[1] > $g.screen.bot){
+    if (pos[1] > GLOBALS.screen.bot){
       // bye bye
-      $g.eLasers.remove(this);
+      GLOBALS.eLasers.remove(this);
     }
   };
 

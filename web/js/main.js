@@ -1,8 +1,12 @@
 (function (App) {
 
-	var GLOBALS = window;
+	window.GLOBALS = {};
+	var GLOBALS = window.GLOBALS;
 
-	GLOBALS.hideAll = function (){
+	GLOBALS.WIDTH = window.innerWidth;
+	GLOBALS.HEIGHT = window.innerHeight;
+
+	var hideAll = GLOBALS.hideAll = function (){
 		$('#home-page').hide();
 		$('#game-page').hide();
 		$('#high-page').hide();
@@ -10,13 +14,13 @@
 		GLOBALS.gameRunning = false;
 	}
 
-	GLOBALS.loadGame = function(){
+	var loadGame = GLOBALS.loadGame = function(){
 		hideAll();
 		$('#game-page').show();
 		GLOBALS.gameRunning = true;
 	}
 
-	GLOBALS.loadHome = function() {
+	var loadHome = GLOBALS.loadHome = function() {
 		hideAll();
 		$('#home-page').show();
 		GLOBALS.gameRunning = false;
@@ -46,7 +50,7 @@
 	    currentHealth	: 	100
 	}
 
-	GLOBALS.diff = 1;
+	GLOBALS.difficulty = 1;
 	GLOBALS.gameRunning = false;
 	GLOBALS.continue = false;
 
@@ -62,14 +66,14 @@
 				$('#loading').show();
 				cards.kik.getUser(function (user) {
 			      if ( !user ) {
-			         	GLOBALS.diff = 1;
+			         	GLOBALS.difficulty = 1;
 			         	GLOBALS.loadGame();
 						return;
 			      }
 
 				API.createLogin(user.username, function (user) {
-					GLOBALS.diff = 1;
-					GLOBALS.user = user;
+					GLOBALS.difficulty = 1;
+					if (user !== null) GLOBALS.user = user;
 					GLOBALS.loadGame();
 				});
 			});
@@ -82,14 +86,14 @@
 				$('#loading').show();
 				cards.kik.getUser(function (user) {
 			      if ( !user ) {
-					GLOBALS.diff = 2;
+					GLOBALS.difficulty = 2;
 					GLOBALS.loadGame();
 			      }
 
 
 				API.createLogin(user.username, function (user) {
-					GLOBALS.diff = 2
-					GLOBALS.user = user;
+					GLOBALS.difficulty = 2
+					if (user !== null) GLOBALS.user = user;
 					GLOBALS.loadGame();
 				});
 			});
@@ -107,7 +111,8 @@
 			      }
 
 					API.createLogin(user.username, function (user) {
-					    GLOBALS.user = user;
+						if (user !== null) GLOBALS.user = user;
+						console.log("USER" + user);
 					    GLOBALS.continue = true;
 					    GLOBALS.loadGame();
 					});
@@ -166,7 +171,9 @@ CanvasRenderingContext2D.prototype.clear =
       this.save();
       this.setTransform(1, 0, 0, 1, 0, 0);
     }
-    this.clearRect(0, 0, window.innerWidth, window.innerHeight);
+	this.fillStyle = "#fff";
+	this.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    // this.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
     if (preserveTransform) {
       this.restore();

@@ -1,5 +1,5 @@
 var gamejs = require('gamejs');
-var $g = require('globals');
+var GLOBALS = window.GLOBALS;
 
   var Proj = function(rect, image, pos) {
     // call superconstructor
@@ -9,7 +9,7 @@ var $g = require('globals');
     this.image = gamejs.transform.rotate(this.originalImage, 0);
     
     // [x,y]
-    this.pos = [Math.random()*$g.screen.right,$g.screen.top-10];
+    this.pos = [Math.random()*GLOBALS.screen.right,GLOBALS.screen.top-10];
 
     this.size = rect;
     this.velocity = [0, Math.random() + 2];
@@ -39,8 +39,8 @@ var $g = require('globals');
 
   Proj.prototype.checkbounds = function(){
   	var pos = this.pos
-  	if (pos[1] > $g.screen.bot){
-  		$g.projectiles.remove(this);
+  	if (pos[1] > GLOBALS.screen.bot){
+  		GLOBALS.projectiles.remove(this);
   	}
   };
 
@@ -61,8 +61,8 @@ var $g = require('globals');
 
   Star.prototype.checkbounds = function(){
     var pos = this.pos
-    if (pos[1] > $g.screen.bot){
-      this.rect.center = this.pos = [Math.random()*$g.screen.right,$g.screen.top-10];
+    if (pos[1] > GLOBALS.screen.bot){
+      this.rect.center = this.pos = [Math.random()*GLOBALS.screen.right,GLOBALS.screen.top-10];
     }
   };
 

@@ -1,10 +1,9 @@
 var gamejs = require('gamejs');
-var $g = require('globals');
 var $Player = require('player');
 var $Proj = require('projectile');
 var $Enemy = require('enemy');
 
-var GLOBALS = window;
+var GLOBALS = window.GLOBALS;
 
   var StartScene = function(director) {
       this.director = director;
@@ -12,12 +11,10 @@ var GLOBALS = window;
       this.canvas = document.getElementById('gjs-canvas');
       this.context = this.canvas.getContext('2d');
 
-      this.player = $g.player = new $Player.Player([29,64]);
-      $g.player.stats = GLOBALS.user;
-      $g.player.health = $g.player.stats.maxHealth;
+      this.player = GLOBALS.player = new $Player.Player([29,64]);
 
-      $g.game.score = 0;
-      $g.game.level = 1;
+      GLOBALS.score = 0;
+      GLOBALS.level = 1;
 
       this.draw = function(display, msDuration) {
         this.context.fillStyle = '#20102F';
@@ -26,8 +23,8 @@ var GLOBALS = window;
         this.bg.update(msDuration);
         this.bg.draw(display);
 
-        $g.player.draw(display);
-        $g.player.update(msDuration);
+        GLOBALS.player.draw(display);
+        GLOBALS.player.update(msDuration);
 
         this.context.font = '20px monospace';
         this.context.textAlign = 'center';
@@ -39,6 +36,10 @@ var GLOBALS = window;
         if (event.type === "touchstart"){
             var game = new GameScene(this.director, this.bg);
             this.director.replaceScene(game);
+            GLOBALS.player.stats = GLOBALS.user;
+            console.log(GLOBALS.continue);
+            if (GLOBALS.continue) GLOBALS.player.health = GLOBALS.user.currentHealth;
+            else GLOBALS.player.health = GLOBALS.player.stats.maxHealth;
         }
       };
     };
@@ -61,8 +62,8 @@ var GLOBALS = window;
         this.context.textAlign = 'center';
         this.context.fillStyle = '#FFF';
         this.context.fillText('Game Over', this.canvas.width / 2, this.canvas.height / 2 - 45);
-        this.context.fillText('Score: ' + $g.game.score, this.canvas.width / 2, this.canvas.height / 2 - 15);
-        this.context.fillText('Level: ' + $g.game.level, this.canvas.width / 2, this.canvas.height / 2 + 15);
+        this.context.fillText('Score: ' + GLOBALS.score, this.canvas.width / 2, this.canvas.height / 2 - 15);
+        this.context.fillText('Level: ' + GLOBALS.level, this.canvas.width / 2, this.canvas.height / 2 + 15);
         this.context.fillText('Touch to play again', this.canvas.width / 2, this.canvas.height / 2 + 45);
 
       };
@@ -70,13 +71,13 @@ var GLOBALS = window;
       this.handle = function(event) {
         if (event.type === "touchstart"){
           var that = this;
-            API.createLogin($g.player.stats.name, function (user) {
+            API.createLogin(GLOBALS.player.stats.name, function (user) {
                   console.log(user);
                   GLOBALS.user = user;
                   GLOBALS.continue = false;
-                  $g.player = new $Player.Player([29,64]);
-                  $g.player.stats = GLOBALS.user;
-                  $g.player.health = $g.player.stats.maxHealth;
+                  GLOBALS.player = new $Player.Player([29,64]);
+                  GLOBALS.player.stats = GLOBALS.user;
+                  GLOBALS.player.health = GLOBALS.player.stats.maxHealth;
                   var game = new GameScene(that.director, that.bg);
                   that.director.replaceScene(game);
             });
@@ -95,23 +96,23 @@ var GLOBALS = window;
     this.canvas = document.getElementById('gjs-canvas');
     this.context = this.canvas.getContext('2d');
 
-    $g.lasers = new gamejs.sprite.Group();
-    $g.enemies = new gamejs.sprite.Group();
-    $g.projectiles = new gamejs.sprite.Group();
-    $g.eLasers = new gamejs.sprite.Group();
+    GLOBALS.lasers = new gamejs.sprite.Group();
+    GLOBALS.enemies = new gamejs.sprite.Group();
+    GLOBALS.projectiles = new gamejs.sprite.Group();
+    GLOBALS.eLasers = new gamejs.sprite.Group();
 
-    console.log($g.enemies.length());
+    console.log(GLOBALS.enemies.length());
 
     console.log("CONTINUE? : " + GLOBALS.continue)
     if (GLOBALS.continue) {
-      this.setup($g.player.stats.currentGame);
-      $g.game = {
-        score     : $g.player.stats.currentScore,
-        level     : $g.player.stats.currentGame
+      this.setup(GLOBALS.player.stats.currentGame);
+      GLOBALS.game = {
+        score     : GLOBALS.player.stats.currentScore,
+        level     : GLOBALS.player.stats.currentGame
       }
-      $g.player.health = $g.player.currentHealth;
+      GLOBALS.player.health = GLOBALS.player.currentHealth;
     } else {
-      $g.game = {
+      GLOBALS.game = {
         score     : 0,
         level     : 1
       }
@@ -126,16 +127,16 @@ var GLOBALS = window;
     var numOfProjs = 0;
     var projId = setInterval(function(){
       numOfProjs += 1
-      var proj = new $Proj.Proj([60, 50], $g.images.meteor);
-      $g.projectiles.add(proj);  
+      var proj = new $Proj.Proj([60, 50], GLOBALS.images.meteor);
+      GLOBALS.projectiles.add(proj);  
       if (numOfProjs > lvl) clearInterval(projId);
     }, 1500);
 
     var numOfEnemies = 0;
     var enemId = setInterval(function(){
         numOfEnemies += 1
-        var enemy = new $Enemy.Enemy([35,35], $g.images["e" + String(numOfEnemies%5 + 1)]);
-        $g.enemies.add(enemy);
+        var enemy = new $Enemy.Enemy([35,35], GLOBALS.images["e" + String(numOfEnemies%5 + 1)]);
+        GLOBALS.enemies.add(enemy);
         if (numOfEnemies > Math.ceil(lvl/2)) {
           clearInterval(enemId);
           that.loading = false;
@@ -147,11 +148,11 @@ var GLOBALS = window;
   GameScene.prototype.draw = function(display, msDuration) {
       var that = this;
       display.fill('#20102F');
-      if ($g.player.health <= 0) {
+      if (GLOBALS.player.health <= 0) {
 
-        var stats = $g.player.stats;
-        if (stats.highlevel < $g.game.level) stats.highlevel = $g.game.level;
-        if (stats.highscore < $g.game.score) stats.highscore = $g.game.score;
+        var stats = GLOBALS.player.stats;
+        if (stats.highlevel < GLOBALS.level) stats.highlevel = GLOBALS.level;
+        if (stats.highscore < GLOBALS.score) stats.highscore = GLOBALS.score;
         stats.currentGame = 1;
         stats.currentScore = 0;
 
@@ -168,44 +169,44 @@ var GLOBALS = window;
       this.context.font = '20px monospace';
       this.context.textAlign = 'left';
       this.context.fillStyle = '#FFF';
-      this.context.fillText('Score: ' + $g.game.score, 10, 20);
-      this.context.fillText('Level: ' + $g.game.level, 10, 50);
+      this.context.fillText('Score: ' + GLOBALS.score, 10, 20);
+      this.context.fillText('Level: ' + GLOBALS.level, 10, 50);
 
       // Update the player
-      $g.player.update(msDuration);
-      $g.player.draw(display);
+      GLOBALS.player.update(msDuration);
+      GLOBALS.player.draw(display);
 
       // Update the players lasers
-      $g.lasers.update(msDuration);
-      $g.lasers.draw(display);
+      GLOBALS.lasers.update(msDuration);
+      GLOBALS.lasers.draw(display);
 
       // Update the enemies
-      $g.enemies.update(msDuration);
-      $g.enemies.draw(display);
+      GLOBALS.enemies.update(msDuration);
+      GLOBALS.enemies.draw(display);
 
-      $g.eLasers.update(msDuration);
-      $g.eLasers.draw(display);
+      GLOBALS.eLasers.update(msDuration);
+      GLOBALS.eLasers.draw(display);
 
       // Update all projectiles (including enemy sers)
-      $g.projectiles.update(msDuration);
-      $g.projectiles.draw(display);
+      GLOBALS.projectiles.update(msDuration);
+      GLOBALS.projectiles.draw(display);
 
-      if ($g.enemies.length() === 0 && $g.projectiles.length() === 0 && !this.loading) {
-        $g.game.level += 1;
+      if (GLOBALS.enemies.length() === 0 && GLOBALS.projectiles.length() === 0 && !this.loading) {
+        GLOBALS.level += 1;
 
-        var stats = $g.player.stats;
-        if (stats.highscore < $g.game.score) stats.highscore = $g.game.score;
-        if (stats.highlevel < $g.game.level) stats.highlevel = $g.game.level;
-        stats.currentGame = $g.game.level;
-        stats.currentScore = $g.game.score;
-        stats.currentHealth = $g.player.health;
+        var stats = GLOBALS.player.stats;
+        if (stats.highscore < GLOBALS.score) stats.highscore = GLOBALS.score;
+        if (stats.highlevel < GLOBALS.level) stats.highlevel = GLOBALS.level;
+        stats.currentGame = GLOBALS.level;
+        stats.currentScore = GLOBALS.score;
+        stats.currentHealth = GLOBALS.player.health;
 
         API.updateUser(stats, function(user){
           console.log(user);
         });
 
         this.loading = true;
-        this.setup($g.game.level);
+        this.setup(GLOBALS.level);
         
       }
   };
@@ -221,7 +222,7 @@ var GLOBALS = window;
       }
     }
     
-    $g.player.handle(event);
+    GLOBALS.player.handle(event);
   };
 
 
@@ -233,20 +234,20 @@ var SettingsScene = function (director, bg){
       this.bg.update(msDuration);
       this.bg.draw(display); 
 
-      $g.context.font = '30px monospace';
-      $g.context.textAlign = 'center';
-      $g.context.fillStyle = '#FFF';
-      $g.context.fillText('Continue?', $g.canvas.width / 2, $g.canvas.height / 2 - 30);
-      $g.context.fillText('Quit?', $g.canvas.width / 2, $g.canvas.height / 2 + 30);
+      GLOBALS.context.font = '20px monospace';
+      GLOBALS.context.textAlign = 'center';
+      GLOBALS.context.fillStyle = '#FFF';
+      GLOBALS.context.fillText('Continue?', GLOBALS.canvas.width / 2, GLOBALS.canvas.height / 2 - 20);
+      GLOBALS.context.fillText('Quit?', GLOBALS.canvas.width / 2, GLOBALS.canvas.height / 2 + 20);
   };
 
   this.handle = function (event){
     if (event.type === "touchstart"){
       var point = [event.changedTouches[0].pageX, event.changedTouches[0].pageY]
       console.log(point)
-      if (point[1] > $g.canvas.height / 2 - 60 && point[1] < $g.canvas.height / 2) {
+      if (point[1] > GLOBALS.canvas.height / 2 - 60 && point[1] < GLOBALS.canvas.height / 2) {
         this.director.pop();
-      } else if (point[1] < $g.canvas.height / 2 + 60 && point[1] > $g.canvas.height / 2){
+      } else if (point[1] < GLOBALS.canvas.height / 2 + 60 && point[1] > GLOBALS.canvas.height / 2){
         
         director.popAll();
         GLOBALS.hideAll();
@@ -254,7 +255,7 @@ var SettingsScene = function (director, bg){
 
         setTimeout(function(){
           GLOBALS.loadHome();
-        },100)
+        },500)
         
       
         var firstScene = new StartScene(this.director);
@@ -273,8 +274,8 @@ var SettingsScene = function (director, bg){
 
     var that = this;
 
-    this.image = gamejs.image.load($g.images.bg);
-    this.settings = gamejs.image.load($g.images.settings);
+    this.image = gamejs.image.load(GLOBALS.images.bg);
+    this.settings = gamejs.image.load(GLOBALS.images.settings);
     this.settings = gamejs.transform.scale(this.settings, [50,50])
 
     try {
@@ -293,7 +294,7 @@ var SettingsScene = function (director, bg){
       var numOfStars = 0;
       var starId = setInterval(function(){
         numOfStars += 1
-          var star = new $Proj.Star([15, 15], $g.images.star);
+          var star = new $Proj.Star([15, 15], GLOBALS.images.star);
           that.stars.add(star);  
           if (numOfStars > 5) clearInterval(starId);
     }, 1500);
@@ -318,12 +319,12 @@ var SettingsScene = function (director, bg){
       }
       display.blit(this.settings, [window.innerWidth-50, 0])
 
-      var ratio =  $g.player.health / $g.player.stats.maxHealth;
+      var ratio =  GLOBALS.player.health / GLOBALS.player.stats.maxHealth;
       var color = "#00DD00"
       if (ratio < 0.3) color = "#DD0000"
       else if (ratio < 0.6) color = "DDDD00"
 
-      gamejs.draw.rect(display, color, new gamejs.Rect([$g.screen.left, $g.screen.bot - 10], [$g.player.health / $g.player.stats.maxHealth * window.innerWidth, 20]), 0);
+      gamejs.draw.rect(display, color, new gamejs.Rect([GLOBALS.screen.left, GLOBALS.screen.bot - 10], [GLOBALS.player.health / GLOBALS.player.stats.maxHealth * window.innerWidth, 20]), 0);
 
       if (this.moving) this.stars.draw(display);
     }

@@ -1,17 +1,30 @@
-
 var gamejs = require('gamejs');
-var $g = require('globals');
 var $Director = require('director');
 var $Scenes = require('scenes');
 
-var GLOBALS = window;
+var GLOBALS = window.GLOBALS;
+
+
+GLOBALS.resetGame = function (){
+	GLOBALS.score = 0;
+	GLOBALS.level = 0;
+
+	GLOBALS.lasers = new gamejs.sprite.Group();
+	GLOBALS.enemies = new gamejs.sprite.Group();
+	GLOBALS.projectiles = new gamejs.sprite.Group();
+	GLOBALS.eLasers = new gamejs.sprite.Group();
+	GLOBALS.stars = new gamejs.sprite.Group();
+
+	GLOBALS.continue = false
+	GLOBALS.gameRunning = false;
+}
 
 var main = function(){
 
 		var display = gamejs.display.setMode([window.innerWidth, window.innerHeight]);
-		$g.game.diff = GLOBALS.diff;
+		GLOBALS.resetGame();
 
-		var director = $g.director = new $Director.Director();
+		var director = GLOBALS.director = new $Director.Director();
 		var firstScene = new $Scenes.StartScene(director);
 		director.start(firstScene);
 
@@ -45,7 +58,7 @@ var main = function(){
 	   	}
 
 	   	gamejs.onTick(function(msDuration) {
-	        $g.context.clear();
+	        GLOBALS.context.clear();
 			if (lastOrientationEvent !== lastRenderedOrientationEvent) {
 				lastRenderedOrientationEvent = lastOrientationEvent;
 		   		director.handle(lastOrientationEvent);
@@ -55,5 +68,5 @@ var main = function(){
 	    });
 };
 
-gamejs.preload($g.imageArray);
+gamejs.preload(GLOBALS.imageArray);
 gamejs.ready(main);

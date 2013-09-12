@@ -1,7 +1,7 @@
-var gamejs = require('gamejs');
-var GLOBALS = window;
+(function(){
+	var GLOBALS = window.GLOBALS;
 
-	var images = exports.images = {
+	GLOBALS.images = {
 		playerF1: "./img/player/f1.png",
 		playerF2: "./img/player/f2.png",
 		playerF3: "./img/player/f3.png",
@@ -24,7 +24,7 @@ var GLOBALS = window;
 		settings: "./img/settings.png"
 	}
 
-	var imageArray = exports.imageArray = [
+	GLOBALS.imageArray = [
 		"./img/player/f1.png",
 		"./img/player/f2.png",
 		"./img/player/f3.png",
@@ -45,10 +45,9 @@ var GLOBALS = window;
 		"./img/star.png",
 
 		"./img/settings.png"
-
 	]
 
-	var screen = exports.screen = {
+	GLOBALS.screen = {
 		top	 		: 	0,
 		right 		: 	window.innerWidth,
 		bot	 		: 	window.innerHeight,
@@ -56,34 +55,19 @@ var GLOBALS = window;
 	}
 
 
-	var game = exports.game = {
-		score 		: 0,
-		level		: 1,
-		diff	 	: GLOBALS.diff
-	}
+	GLOBALS.score = 0;
+	GLOBALS.level = 1;
+	GLOBALS.difficulty = 1;
 
-	var lasers = exports.lasers = new gamejs.sprite.Group();
-	var enemies = exports.enemies = new gamejs.sprite.Group();
-	var projectiles = exports.projectiles = new gamejs.sprite.Group();
-	var eLasers = exports.eLasers = new gamejs.sprite.Group();
-	var stars = exports.stars = new gamejs.sprite.Group();
+	GLOBALS.lasers;
+	GLOBALS.enemies;
+	GLOBALS.projectiles;
+	GLOBALS.eLasers;
+	GLOBALS.stars;
 
-	var player = exports.player;
-	var director = exports.director;
+	GLOBALS.player;
+	GLOBALS.director;
 
-	var canvas = exports.canvas = document.getElementById('gjs-canvas');
-	var context = exports.context = canvas.getContext('2d');
-
-
-	GLOBALS.resetGame = function (){
-		game.score = 0;
-		game.level = 0;
-
-		lasers = new gamejs.sprite.Group();
-		enemies = new gamejs.sprite.Group();
-		projectiles = new gamejs.sprite.Group();
-		eLasers = new gamejs.sprite.Group();
-		stars = new gamejs.sprite.Group();
-		GLOBALS.continue = false
-		GLOBALS.gameRunning = false;
-	}
+	var canvas = GLOBALS.canvas = document.getElementById('gjs-canvas');
+	GLOBALS.context = canvas.getContext('2d');
+})();
