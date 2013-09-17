@@ -1,10 +1,10 @@
 (function (App) {
 
-	window.GLOBALS = {};
-	var GLOBALS = window.GLOBALS;
+	window.GLOBALS 	= {};
+	var GLOBALS 	= window.GLOBALS;
 
-	GLOBALS.WIDTH = window.innerWidth;
-	GLOBALS.HEIGHT = window.innerHeight;
+	GLOBALS.WIDTH 	= window.innerWidth;
+	GLOBALS.HEIGHT 	= window.innerHeight;
 
 	var hideAll = GLOBALS.hideAll = function (){
 		$('#home-page').hide();
@@ -61,7 +61,7 @@
 
 		$(page)
 			.find('#normal')
-			.on('click', function(event){
+			.on('touchend', function(event){
 				hideAll();
 				$('#loading').show();
 				cards.kik.getUser(function (user) {
@@ -81,7 +81,7 @@
 
 		$(page)
 			.find('#hard')
-			.on('click', function(event){
+			.on('touchend', function(event){
 				hideAll();
 				$('#loading').show();
 				cards.kik.getUser(function (user) {
@@ -101,7 +101,7 @@
 
 		$(page)
 			.find('#continue')
-			.on('click', function(event){
+			.on('touchend', function(event){
 				hideAll();
 				$('#loading').show();
 				cards.kik.getUser(function (user) {
@@ -123,33 +123,33 @@
 			HIGH SCORE PAGE
 		*/
 
-		$(page)
-			.find('#high')
-			.on('click', function(event){
-				hideAll();
-				$('#loading').show();
-				API.getHigh(function (err, users) {
-					if (err) console.log(err);
-					else {
-						console.log(users);
-						for (var i = 0; i < users.length; i++){
-							console.log(users[i]);
-							$('#highscores').append( '<li>' + users[i].name + ': ' + users[i]['highscore'] + '</li>' );
+			$(page)
+				.find('#high')
+				.on('touchend', function(event){
+					hideAll();
+					$('#loading').show();
+					API.getHigh(function (err, users) {
+						if (err) console.log(err);
+						else {
+							console.log(users);
+							for (var i = 0; i < users.length; i++){
+								console.log(users[i]);
+								$('#highscores').append( '<li> <div class = "left"> ' + users[i].name + ': </div> <div class = "right">' + users[i]['highscore'] + '</div> </li>' );
+							}
+							$('#loading').hide();
+							$('#high-page').show();
 						}
-						$('#loading').hide();
-						$('#high-page').show();
-					}
-				});
-		});
+					});
+			});
 
-		$(page)
-			.find('#back')
-			.on('click', function(event){
-				GLOBALS.hideAll();
-				$('#loading').show();
-				$('#highscores').html('')
-				$('#home-page').show();
-		});
+			$(page)
+				.find('#back')
+				.on('touchend', function(event){
+					GLOBALS.hideAll();
+					$('#loading').show();
+					$('#highscores').html('')
+					$('#home-page').show();
+			});
 
 		/* 
 			END HIGH SCORE PAGE
@@ -173,7 +173,6 @@ CanvasRenderingContext2D.prototype.clear =
     }
 	this.fillStyle = "#fff";
 	this.fillRect(0, 0, window.innerWidth, window.innerHeight);
-    // this.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
     if (preserveTransform) {
       this.restore();

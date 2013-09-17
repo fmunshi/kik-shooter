@@ -51,7 +51,7 @@ var GLOBALS = window.GLOBALS;
     Star.superConstructor.apply(this, arguments);
     this.image = gamejs.image.load(image);
     this.originalImage = gamejs.transform.scale(this.image, rect);
-    this.image = gamejs.transform.rotate(this.originalImage, Math.random()*90);
+    this.image = gamejs.transform.rotate(this.originalImage, 0);
 
     this.velocity = [0, 2];
 

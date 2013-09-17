@@ -9,9 +9,10 @@
 		<meta name="kik-canvas-fix" content="true">
 		<link rel="kik-icon" href="/img/icon.png">
 
-		<!-- Styles -->
+		<!-- zerver:css/main.min.css -->
 		<link rel="stylesheet" href="http://cdn.kik.com/app/1/default.css">
 		<link rel="stylesheet" href="/css/styles.css">
+		<!-- /zerver -->
 	</head>
 
 	<body>
@@ -21,9 +22,9 @@
 
 		<div class="app-page" data-page="Home">
 			<span id = 'home-page'>
-				<div class="app-topbar">
+				<h1 class = 'title'>
 					Kik - Shooter
-				</div>
+				</h1>
 				<div class="app-content">
 					<button class = 'space' id = 'normal'>Normal</button>
 					<button class = 'space' id = 'hard'>Hard</button>
@@ -36,10 +37,10 @@
 				<canvas id="gjs-canvas"></canvas>
 			</span>
 
-			<span style = 'display: none;' id = 'high-page'>
-				<div class="app-topbar">
+			<span style = 'display: none;' id = 'high-page'>	
+				<h1 class = 'title'>
 					High Scores
-				</div>
+				</h1>
 				<div class="app-content">
 					<ul id = 'highscores'>
 					</ul>
@@ -65,7 +66,7 @@
 			</span>
 			
 		</div>
-
+		<!-- zerver:js/main.min.js -->
 		<script src="zerver/API.js"></script>
 		<script src="js/lib/yabble.js"></script>
     	<script src="js/lib/gamejs.min.js"></script>
@@ -74,6 +75,7 @@
 		<script src="http://cdn.kik.com/app/1/app.js"></script>
 		<script src="js/main.js"></script>
 		<script src="js/globals.js"></script>
+		<!-- /zerver -->
 		<script>
 			$(document).ready(function(){
 				function hack() {

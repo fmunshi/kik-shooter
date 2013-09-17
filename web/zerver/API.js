@@ -1,18 +1,14 @@
   var mongoose = require('mongoose');
    
-  var uristring = 
-  	process.env.MONGOLAB_URI || 
-  	process.env.MONGOHQ_URL || 
-  	'mongodb://localhost/kik-shooter';
+  var uristring = process.env.MONGOLAB_URI ||  process.env.MONGOHQ_URL ||  'mongodb://localhost/kik-shooter';
 
   mongoose.connect(uristring, function (err, res) {
     if (err) { 
-    	console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+    	console.log ('Error connecting to: ' + uristring + '. ' + err);
     } else {
-    	console.log ('Succeeded connected to: ' + uristring);
+    	console.log ('Successfully connected to: ' + uristring);
     }
   });
-
 
 
   var UserSchema = new mongoose.Schema({
@@ -33,6 +29,7 @@
     currentScore  :   Number,
 
     currentHealth :   Number
+
   });
 
   var User = mongoose.model('User', UserSchema);
@@ -74,15 +71,15 @@
           }
       });
 
-    },
+    }
 
   exports.getHigh = function (callback) {
-    var users = User
-          .find({})
-          .sort('-highscore')
-          .limit(10)
-          .exec(callback);
-    },
+      User
+        .find({})
+        .sort('-highscore')
+        .limit(10)
+        .exec(callback);
+    }
 
   exports.updateUser = function(user, callback) {
       User.findOne({ name: user.name }, function(err, u){

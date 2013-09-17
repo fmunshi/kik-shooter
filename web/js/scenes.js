@@ -4,12 +4,13 @@ var $Proj = require('projectile');
 var $Enemy = require('enemy');
 
 var GLOBALS = window.GLOBALS;
+var canvas  = document.getElementById('gjs-canvas');
+var context = canvas.getContext('2d');
+
 
   var StartScene = function(director) {
       this.director = director;
       this.bg = new Background();
-      this.canvas = document.getElementById('gjs-canvas');
-      this.context = this.canvas.getContext('2d');
 
       this.player = GLOBALS.player = new $Player.Player([29,64]);
 
@@ -17,8 +18,8 @@ var GLOBALS = window.GLOBALS;
       GLOBALS.level = 1;
 
       this.draw = function(display, msDuration) {
-        this.context.fillStyle = '#20102F';
-        this.context.fillRect(0, 0, window.innerWidth,  window.innerHeight);
+        context.fillStyle = '#20102F';
+        context.fillRect(0, 0, window.innerWidth,  window.innerHeight);
 
         this.bg.update(msDuration);
         this.bg.draw(display);
@@ -26,10 +27,10 @@ var GLOBALS = window.GLOBALS;
         GLOBALS.player.draw(display);
         GLOBALS.player.update(msDuration);
 
-        this.context.font = '20px monospace';
-        this.context.textAlign = 'center';
-        this.context.fillStyle = '#FFF';
-        this.context.fillText('Touch to Start', this.canvas.width / 2, this.canvas.height / 2);
+        context.font = '20px Open Sans';
+        context.textAlign = 'center';
+        context.fillStyle = '#FFF';
+        context.fillText('Touch to Start', canvas.width / 2, canvas.height / 2);
       };
 
       this.handle = function(event) {
@@ -49,8 +50,6 @@ var GLOBALS = window.GLOBALS;
       this.director = director;
       this.bg = bg;
 
-      this.canvas = document.getElementById('gjs-canvas');
-      this.context = this.canvas.getContext('2d');
 
       this.draw = function(display, msDuration) {
         display.fill('#20102F');
@@ -58,13 +57,13 @@ var GLOBALS = window.GLOBALS;
         this.bg.update(msDuration);
         this.bg.draw(display);
 
-        this.context.font = '20px monospace';
-        this.context.textAlign = 'center';
-        this.context.fillStyle = '#FFF';
-        this.context.fillText('Game Over', this.canvas.width / 2, this.canvas.height / 2 - 45);
-        this.context.fillText('Score: ' + GLOBALS.score, this.canvas.width / 2, this.canvas.height / 2 - 15);
-        this.context.fillText('Level: ' + GLOBALS.level, this.canvas.width / 2, this.canvas.height / 2 + 15);
-        this.context.fillText('Touch to play again', this.canvas.width / 2, this.canvas.height / 2 + 45);
+        context.font = '20px Open Sans';
+        context.textAlign = 'center';
+        context.fillStyle = '#FFF';
+        context.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 45);
+        context.fillText('Score: ' + GLOBALS.score, canvas.width / 2, canvas.height / 2 - 15);
+        context.fillText('Level: ' + GLOBALS.level, canvas.width / 2, canvas.height / 2 + 15);
+        context.fillText('Touch to play again', canvas.width / 2, canvas.height / 2 + 45);
 
       };
 
@@ -91,10 +90,6 @@ var GLOBALS = window.GLOBALS;
     this.loading = true;
     if (bg) this.bg = bg;
     else this.bg = new Background();
-
-
-    this.canvas = document.getElementById('gjs-canvas');
-    this.context = this.canvas.getContext('2d');
 
     GLOBALS.lasers = new gamejs.sprite.Group();
     GLOBALS.enemies = new gamejs.sprite.Group();
@@ -166,11 +161,11 @@ var GLOBALS = window.GLOBALS;
       this.bg.update(msDuration);
       this.bg.draw(display);
 
-      this.context.font = '20px monospace';
-      this.context.textAlign = 'left';
-      this.context.fillStyle = '#FFF';
-      this.context.fillText('Score: ' + GLOBALS.score, 10, 20);
-      this.context.fillText('Level: ' + GLOBALS.level, 10, 50);
+      context.font = '20px Open Sans';
+      context.textAlign = 'left';
+      context.fillStyle = '#FFF';
+      context.fillText('Score: ' + GLOBALS.score, 10, 20);
+      context.fillText('Level: ' + GLOBALS.level, 10, 50);
 
       // Update the player
       GLOBALS.player.update(msDuration);
@@ -234,11 +229,11 @@ var SettingsScene = function (director, bg){
       this.bg.update(msDuration);
       this.bg.draw(display); 
 
-      GLOBALS.context.font = '20px monospace';
-      GLOBALS.context.textAlign = 'center';
-      GLOBALS.context.fillStyle = '#FFF';
-      GLOBALS.context.fillText('Continue?', GLOBALS.canvas.width / 2, GLOBALS.canvas.height / 2 - 20);
-      GLOBALS.context.fillText('Quit?', GLOBALS.canvas.width / 2, GLOBALS.canvas.height / 2 + 20);
+      context.font = '20px Open Sans';
+      context.textAlign = 'center';
+      context.fillStyle = '#FFF';
+      context.fillText('Continue?', GLOBALS.canvas.width / 2, GLOBALS.canvas.height / 2 - 20);
+      context.fillText('Quit?', GLOBALS.canvas.width / 2, GLOBALS.canvas.height / 2 + 20);
   };
 
   this.handle = function (event){
@@ -267,14 +262,14 @@ var SettingsScene = function (director, bg){
 
 }
 
-  var Background = function(){
+  var Background = function() {
 
-    this.i = 0;
-    while(this.i*254 < window.innerWidth + 100 && this.i*256 < window.innerHeight + 100) this.i++; 
 
     var that = this;
 
-    this.image = gamejs.image.load(GLOBALS.images.bg);
+    var img = this.image = new Image();
+        img.src = GLOBALS.images.bg
+        
     this.settings = gamejs.image.load(GLOBALS.images.settings);
     this.settings = gamejs.transform.scale(this.settings, [50,50])
 
@@ -282,7 +277,7 @@ var SettingsScene = function (director, bg){
       var os = cards.utils.platform.os;
 
       if ((os.name === 'android' && os.version < 4.3) || (os.name === 'windows') || (os.name === 'ios' && os.version < 5)){
-        this.moving = false;  
+        this.moving = false;
       } else {
         this.moving = true;
       }
@@ -306,17 +301,10 @@ var SettingsScene = function (director, bg){
 
     this.draw = function(display) {
 
-      var a = this.i;
-      var b = this.i;
+      context.fillStyle = context.createPattern(img, 'repeat');
+      context.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-      while (a >= 0){
-        while (b >= 0){
-          display.blit(this.image, [a*254, b*256]);
-          b--;
-        }
-        b = this.i;
-        a--;
-      }
+
       display.blit(this.settings, [window.innerWidth-50, 0])
 
       var ratio =  GLOBALS.player.health / GLOBALS.player.stats.maxHealth;
