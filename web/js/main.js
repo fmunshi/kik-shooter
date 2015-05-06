@@ -1,29 +1,28 @@
 (function (App) {
 
-	window.GLOBALS 	= {};
-	var GLOBALS 	= window.GLOBALS;
+	var $g = window.GLOBALS 	= {};
 
-	GLOBALS.WIDTH 	= window.innerWidth;
-	GLOBALS.HEIGHT 	= window.innerHeight;
+	$g.WIDTH 	= window.innerWidth;
+	$g.HEIGHT 	= window.innerHeight;
 
-	var hideAll = GLOBALS.hideAll = function (){
-		$('#home-page').hide();
-		$('#game-page').hide();
-		$('#high-page').hide();
-		$('#highscores').html('')
-		GLOBALS.gameRunning = false;
+	var hideAll = $g.hideAll = function (){
+		$('#home-page').addClass("hidden");
+		$('#game-page').addClass("hidden");
+		$('#high-page').addClass("hidden");
+		$('#highscores').html('');
+		$g.gameRunning = false;
 	}
 
-	var loadGame = GLOBALS.loadGame = function(){
+	var loadGame = $g.loadGame = function(){
 		hideAll();
 		$('#game-page').show();
-		GLOBALS.gameRunning = true;
+		$g.gameRunning = true;
 	}
 
-	var loadHome = GLOBALS.loadHome = function() {
+	var loadHome = $g.loadHome = function() {
 		hideAll();
 		$('#home-page').show();
-		GLOBALS.gameRunning = false;
+		$g.gameRunning = false;
 	}
 
 	try {
@@ -35,99 +34,67 @@
 	}
 
 	// Set a default user
-	GLOBALS.user = {
+	$g.user = {
 	    name        	:   "anonymous",
-
 	    fireRate    	:   750,
-
 	    maxHealth   	:   50,
-
 	    highscore   	:   0,
 	    highlevel   	:   1,
-
 	    currentGame 	:   1,
 	    currentScore	:   0,
 	    currentHealth	: 	100
 	}
 
-	GLOBALS.difficulty = 1;
-	GLOBALS.gameRunning = false;
-	GLOBALS.continue = false;
+	$g.difficulty = 1;
+	$g.gameRunning = false;
+	$g.continue = false;
 
 	App.populator('Home', function (page) {
 
 		require.setModuleRoot("js/");
 		require.run("app");
 
-		$(page)
-			.find('#normal')
-			.on('touchend', function(event){
-				hideAll();
-				$('#loading').show();
-				cards.kik.getUser(function (user) {
-			      if ( !user ) {
-			         	GLOBALS.difficulty = 1;
-			         	GLOBALS.loadGame();
-						return;
-			      }
 
-				API.createLogin(user.username, function (user) {
-					GLOBALS.difficulty = 1;
-					if (user !== null) GLOBALS.user = user;
-					GLOBALS.loadGame();
-				});
+		$g.login = function (user) {
+			API.createLogin(user.username, function (user) {
+				if (user !== null) $g.user = user;
+				$g.loadGame();
 			});
-		});
+		}
 
 		$(page)
-			.find('#hard')
-			.on('touchend', function(event){
-				hideAll();
+			.find('#start-menu button')
+			.on('touchend click', function(event) {
+				var mode = $(this).data("mode");
+				$g.hideAll();
 				$('#loading').show();
-				cards.kik.getUser(function (user) {
-			      if ( !user ) {
-					GLOBALS.difficulty = 2;
-					GLOBALS.loadGame();
-			      }
 
+				if (mode === "normal" || mode === "hard") {
+					if (mode === "normal") 	$g.difficulty = 1;
+					else 										$g.difficulty = 2;
 
-				API.createLogin(user.username, function (user) {
-					GLOBALS.difficulty = 2
-					if (user !== null) GLOBALS.user = user;
-					GLOBALS.loadGame();
-				});
-			});
-		});
+					if (cards.kik) {
+						cards.kik.getUser(function (user) {
+				      if ( !user ) return;
+				      $g.login(user)
+				  	});
+					} else {
+						$g.login($g.user)
+					}
 
-		$(page)
-			.find('#continue')
-			.on('touchend', function(event){
-				hideAll();
-				$('#loading').show();
-				cards.kik.getUser(function (user) {
-			      if ( !user ) {
-			          alert('You need an account to continue');
-			          return;
-			      }
-
-					API.createLogin(user.username, function (user) {
-						if (user !== null) GLOBALS.user = user;
-						console.log("USER" + user);
-					    GLOBALS.continue = true;
-					    GLOBALS.loadGame();
-					});
-			    });
-			});
-
-		/*
-			HIGH SCORE PAGE
-		*/
-
-			$(page)
-				.find('#high')
-				.on('touchend', function(event){
-					hideAll();
-					$('#loading').show();
+				} else if (mode === "continue") {
+					if (cards.kik) {
+						cards.kik.getUser(function (user) {
+				      if ( !user ) {
+				          alert("You need an account to continue");
+				          return;
+				      }
+				      $g.login(user);
+			   		});
+					} else { 
+						alert("You need to be on the Kik Mobile application to utilize the continue feature");
+					}
+				} else if (mode === "high") {
 					API.getHigh(function (err, users) {
 						if (err) console.log(err);
 						else {
@@ -140,20 +107,19 @@
 							$('#high-page').show();
 						}
 					});
+				}
+
+				
 			});
 
 			$(page)
 				.find('#back')
-				.on('touchend', function(event){
-					GLOBALS.hideAll();
+				.on('touchend click', function(event){
+					$g.hideAll();
+					$('#highscores').html('');
 					$('#loading').show();
-					$('#highscores').html('')
 					$('#home-page').show();
 			});
-
-		/* 
-			END HIGH SCORE PAGE
-		*/
 
 	});
 

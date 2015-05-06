@@ -3,7 +3,7 @@ var $Player = require('player');
 var $Proj = require('projectile');
 var $Enemy = require('enemy');
 
-var GLOBALS = window.GLOBALS;
+var $g = window.GLOBALS;
 var canvas  = document.getElementById('gjs-canvas');
 var context = canvas.getContext('2d');
 
@@ -12,10 +12,10 @@ var context = canvas.getContext('2d');
       this.director = director;
       this.bg = new Background();
 
-      this.player = GLOBALS.player = new $Player.Player([29,64]);
+      this.player = $g.player = new $Player.Player([29,64]);
 
-      GLOBALS.score = 0;
-      GLOBALS.level = 1;
+      $g.score = 0;
+      $g.level = 1;
 
       this.draw = function(display, msDuration) {
         context.fillStyle = '#20102F';
@@ -24,8 +24,8 @@ var context = canvas.getContext('2d');
         this.bg.update(msDuration);
         this.bg.draw(display);
 
-        GLOBALS.player.draw(display);
-        GLOBALS.player.update(msDuration);
+        $g.player.draw(display);
+        $g.player.update(msDuration);
 
         context.font = '20px Open Sans';
         context.textAlign = 'center';
@@ -34,22 +34,22 @@ var context = canvas.getContext('2d');
       };
 
       this.handle = function(event) {
-        if (event.type === "touchstart"){
+        console.log("HANDLE");
+        console.log(event.type);
+        if (event.type === "touchstart" || event.type === "click") {
             var game = new GameScene(this.director, this.bg);
             this.director.replaceScene(game);
-            GLOBALS.player.stats = GLOBALS.user;
-            console.log(GLOBALS.continue);
-            if (GLOBALS.continue) GLOBALS.player.health = GLOBALS.user.currentHealth;
-            else GLOBALS.player.health = GLOBALS.player.stats.maxHealth;
+            $g.player.stats = $g.user;
+            console.log($g.continue);
+            if ($g.continue) $g.player.health = $g.user.currentHealth;
+            else $g.player.health = $g.player.stats.maxHealth;
         }
       };
     };
 
   var EndScene = function(director, bg) {
-
       this.director = director;
       this.bg = bg;
-
 
       this.draw = function(display, msDuration) {
         display.fill('#20102F');
@@ -61,59 +61,55 @@ var context = canvas.getContext('2d');
         context.textAlign = 'center';
         context.fillStyle = '#FFF';
         context.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 45);
-        context.fillText('Score: ' + GLOBALS.score, canvas.width / 2, canvas.height / 2 - 15);
-        context.fillText('Level: ' + GLOBALS.level, canvas.width / 2, canvas.height / 2 + 15);
+        context.fillText('Score: ' + $g.score, canvas.width / 2, canvas.height / 2 - 15);
+        context.fillText('Level: ' + $g.level, canvas.width / 2, canvas.height / 2 + 15);
         context.fillText('Touch to play again', canvas.width / 2, canvas.height / 2 + 45);
 
       };
 
       this.handle = function(event) {
-        if (event.type === "touchstart"){
+        if (event.type === "touchstart" || event.type === "click") {
           var that = this;
-            API.createLogin(GLOBALS.player.stats.name, function (user) {
+            API.createLogin($g.player.stats.name, function (user) {
                   console.log(user);
-                  GLOBALS.user = user;
-                  GLOBALS.continue = false;
-                  GLOBALS.player = new $Player.Player([29,64]);
-                  GLOBALS.player.stats = GLOBALS.user;
-                  GLOBALS.player.health = GLOBALS.player.stats.maxHealth;
+                  $g.user = user;
+                  $g.continue = false;
+                  $g.player = new $Player.Player([29,64]);
+                  $g.player.stats = $g.user;
+                  $g.player.health = $g.player.stats.maxHealth;
                   var game = new GameScene(that.director, that.bg);
                   that.director.replaceScene(game);
             });
         }
       };
-
   }
 
   var GameScene = function(director, bg) {
     this.director = director;
     this.loading = true;
+
     if (bg) this.bg = bg;
-    else this.bg = new Background();
+    else    this.bg = new Background();
 
-    GLOBALS.lasers = new gamejs.sprite.Group();
-    GLOBALS.enemies = new gamejs.sprite.Group();
-    GLOBALS.projectiles = new gamejs.sprite.Group();
-    GLOBALS.eLasers = new gamejs.sprite.Group();
+    $g.lasers = new gamejs.sprite.Group();
+    $g.enemies = new gamejs.sprite.Group();
+    $g.projectiles = new gamejs.sprite.Group();
+    $g.eLasers = new gamejs.sprite.Group();
 
-    console.log(GLOBALS.enemies.length());
-
-    console.log("CONTINUE? : " + GLOBALS.continue)
-    if (GLOBALS.continue) {
-      this.setup(GLOBALS.player.stats.currentGame);
-      GLOBALS.game = {
-        score     : GLOBALS.player.stats.currentScore,
-        level     : GLOBALS.player.stats.currentGame
+    if ($g.continue) {
+      this.setup($g.player.stats.currentGame);
+      $g.game = {
+        score     : $g.player.stats.currentScore,
+        level     : $g.player.stats.currentGame
       }
-      GLOBALS.player.health = GLOBALS.player.currentHealth;
+      $g.player.health = $g.player.currentHealth;
     } else {
-      GLOBALS.game = {
+      $g.game = {
         score     : 0,
         level     : 1
       }
       this.setup(1);
     } 
-
   };
 
   GameScene.prototype.setup = function (lvl){
@@ -122,16 +118,16 @@ var context = canvas.getContext('2d');
     var numOfProjs = 0;
     var projId = setInterval(function(){
       numOfProjs += 1
-      var proj = new $Proj.Proj([60, 50], GLOBALS.images.meteor);
-      GLOBALS.projectiles.add(proj);  
+      var proj = new $Proj.Proj([60, 50], $g.images.meteor);
+      $g.projectiles.add(proj);  
       if (numOfProjs > lvl) clearInterval(projId);
     }, 1500);
 
     var numOfEnemies = 0;
     var enemId = setInterval(function(){
         numOfEnemies += 1
-        var enemy = new $Enemy.Enemy([35,35], GLOBALS.images["e" + String(numOfEnemies%5 + 1)]);
-        GLOBALS.enemies.add(enemy);
+        var enemy = new $Enemy.Enemy([35,35], $g.images["e" + String(numOfEnemies%5 + 1)]);
+        $g.enemies.add(enemy);
         if (numOfEnemies > Math.ceil(lvl/2)) {
           clearInterval(enemId);
           that.loading = false;
@@ -143,11 +139,11 @@ var context = canvas.getContext('2d');
   GameScene.prototype.draw = function(display, msDuration) {
       var that = this;
       display.fill('#20102F');
-      if (GLOBALS.player.health <= 0) {
+      if ($g.player.health <= 0) {
 
-        var stats = GLOBALS.player.stats;
-        if (stats.highlevel < GLOBALS.level) stats.highlevel = GLOBALS.level;
-        if (stats.highscore < GLOBALS.score) stats.highscore = GLOBALS.score;
+        var stats = $g.player.stats;
+        if (stats.highlevel < $g.level) stats.highlevel = $g.level;
+        if (stats.highscore < $g.score) stats.highscore = $g.score;
         stats.currentGame = 1;
         stats.currentScore = 0;
 
@@ -164,66 +160,69 @@ var context = canvas.getContext('2d');
       context.font = '20px Open Sans';
       context.textAlign = 'left';
       context.fillStyle = '#FFF';
-      context.fillText('Score: ' + GLOBALS.score, 10, 20);
-      context.fillText('Level: ' + GLOBALS.level, 10, 50);
+      context.fillText('Score: ' + $g.score, 10, 20);
+      context.fillText('Level: ' + $g.level, 10, 50);
 
       // Update the player
-      GLOBALS.player.update(msDuration);
-      GLOBALS.player.draw(display);
+      $g.player.update(msDuration);
+      $g.player.draw(display);
 
       // Update the players lasers
-      GLOBALS.lasers.update(msDuration);
-      GLOBALS.lasers.draw(display);
+      $g.lasers.update(msDuration);
+      $g.lasers.draw(display);
 
       // Update the enemies
-      GLOBALS.enemies.update(msDuration);
-      GLOBALS.enemies.draw(display);
+      $g.enemies.update(msDuration);
+      $g.enemies.draw(display);
 
-      GLOBALS.eLasers.update(msDuration);
-      GLOBALS.eLasers.draw(display);
+      $g.eLasers.update(msDuration);
+      $g.eLasers.draw(display);
 
       // Update all projectiles (including enemy sers)
-      GLOBALS.projectiles.update(msDuration);
-      GLOBALS.projectiles.draw(display);
+      $g.projectiles.update(msDuration);
+      $g.projectiles.draw(display);
 
-      if (GLOBALS.enemies.length() === 0 && GLOBALS.projectiles.length() === 0 && !this.loading) {
-        GLOBALS.level += 1;
+      if ($g.enemies.length() === 0 && $g.projectiles.length() === 0 && !this.loading) {
+        $g.level += 1;
 
-        var stats = GLOBALS.player.stats;
-        if (stats.highscore < GLOBALS.score) stats.highscore = GLOBALS.score;
-        if (stats.highlevel < GLOBALS.level) stats.highlevel = GLOBALS.level;
-        stats.currentGame = GLOBALS.level;
-        stats.currentScore = GLOBALS.score;
-        stats.currentHealth = GLOBALS.player.health;
+        var stats = $g.player.stats;
+        if (stats.highscore < $g.score) stats.highscore = $g.score;
+        if (stats.highlevel < $g.level) stats.highlevel = $g.level;
+        stats.currentGame = $g.level;
+        stats.currentScore = $g.score;
+        stats.currentHealth = $g.player.health;
 
         API.updateUser(stats, function(user){
           console.log(user);
         });
 
         this.loading = true;
-        this.setup(GLOBALS.level);
+        this.setup($g.level);
         
       }
   };
 
   GameScene.prototype.handle = function(event) {
-    if (event.type === "touchstart"){
-      var point = [event.changedTouches[0].pageX, event.changedTouches[0].pageY]
-      console.log(point)
+    if (event.type === "touchstart" || event.type === "click") {
+      var point = [];
+      
+      if (event.type === "touchstart")  point = [event.changedTouches[0].pageX, event.changedTouches[0].pageY];
+      else point = [event.pageX, event.pageY];
+
       if ( point[0] < window.innerWidth && point[0] > (window.innerWidth - 75) ) {
         if ( point[1] < 75 && point[1] > 0 ) {
           this.director.push(new SettingsScene(this.director, this.bg));
         }
       }
     }
-    
-    GLOBALS.player.handle(event);
+
+    $g.player.handle(event);
   };
 
 
 var SettingsScene = function (director, bg){
   this.director = director;
-  this.bg = bg
+  this.bg = bg;
 
   this.draw = function (display, msDuration){
       this.bg.update(msDuration);
@@ -232,50 +231,33 @@ var SettingsScene = function (director, bg){
       context.font = '20px Open Sans';
       context.textAlign = 'center';
       context.fillStyle = '#FFF';
-      context.fillText('Continue?', GLOBALS.canvas.width / 2, GLOBALS.canvas.height / 2 - 20);
-      context.fillText('Quit?', GLOBALS.canvas.width / 2, GLOBALS.canvas.height / 2 + 20);
+      context.fillText('Continue?', $g.canvas.width / 2, $g.canvas.height / 2 - 20);
+      context.fillText('Quit?', $g.canvas.width / 2, $g.canvas.height / 2 + 20);
   };
 
   this.handle = function (event){
-    if (event.type === "touchstart"){
+    if (event.type === "touchstart" || event.type === "click") {
       var point = [event.changedTouches[0].pageX, event.changedTouches[0].pageY]
       console.log(point)
-      if (point[1] > GLOBALS.canvas.height / 2 - 60 && point[1] < GLOBALS.canvas.height / 2) {
+      if (point[1] > $g.canvas.height / 2 - 60 && point[1] < $g.canvas.height / 2) {
         this.director.pop();
-      } else if (point[1] < GLOBALS.canvas.height / 2 + 60 && point[1] > GLOBALS.canvas.height / 2){
-        
-        director.popAll();
-        GLOBALS.hideAll();
-        GLOBALS.resetGame();
-
-        setTimeout(function(){
-          GLOBALS.loadHome();
-        },500)
-        
-      
-        var firstScene = new StartScene(this.director);
-        this.director.start(firstScene); 
+      } else if (point[1] < $g.canvas.height / 2 + 60 && point[1] > $g.canvas.height / 2){
+        location.reload();
       }
     }
-    
-  }
-
+  };
 }
 
   var Background = function() {
-
-
     var that = this;
-
     var img = this.image = new Image();
-        img.src = GLOBALS.images.bg
+        img.src = $g.images.bg
         
-    this.settings = gamejs.image.load(GLOBALS.images.settings);
+    this.settings = gamejs.image.load($g.images.settings);
     this.settings = gamejs.transform.scale(this.settings, [50,50])
 
     try {
       var os = cards.utils.platform.os;
-
       if ((os.name === 'android' && os.version < 4.3) || (os.name === 'windows') || (os.name === 'ios' && os.version < 5)){
         this.moving = false;
       } else {
@@ -289,7 +271,7 @@ var SettingsScene = function (director, bg){
       var numOfStars = 0;
       var starId = setInterval(function(){
         numOfStars += 1
-          var star = new $Proj.Star([15, 15], GLOBALS.images.star);
+          var star = new $Proj.Star([15, 15], $g.images.star);
           that.stars.add(star);  
           if (numOfStars > 5) clearInterval(starId);
     }, 1500);
@@ -307,12 +289,12 @@ var SettingsScene = function (director, bg){
 
       display.blit(this.settings, [window.innerWidth-50, 0])
 
-      var ratio =  GLOBALS.player.health / GLOBALS.player.stats.maxHealth;
+      var ratio =  $g.player.health / $g.player.stats.maxHealth;
       var color = "#00DD00"
       if (ratio < 0.3) color = "#DD0000"
       else if (ratio < 0.6) color = "DDDD00"
 
-      gamejs.draw.rect(display, color, new gamejs.Rect([GLOBALS.screen.left, GLOBALS.screen.bot - 10], [GLOBALS.player.health / GLOBALS.player.stats.maxHealth * window.innerWidth, 20]), 0);
+      gamejs.draw.rect(display, color, new gamejs.Rect([$g.screen.left, $g.screen.bot - 10], [$g.player.health / $g.player.stats.maxHealth * window.innerWidth, 20]), 0);
 
       if (this.moving) this.stars.draw(display);
     }

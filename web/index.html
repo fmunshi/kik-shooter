@@ -21,36 +21,35 @@
 
 
 		<div class="app-page" data-page="Home">
-			<span id = 'home-page'>
-				<h1 class = 'title'>
+			<span id="home-page">
+				<h1 class="title">
 					Kik - Shooter
 				</h1>
-				<div class="app-content">
-					<button class = 'space' id = 'normal'>Normal</button>
-					<button class = 'space' id = 'hard'>Hard</button>
-					<button class = 'space' id = 'continue'>Continue</button>
-					<button class = 'space' id = 'high'>High Scores</button>
+				<div id="start-menu" class="app-content">
+					<button class="space" data-mode="normal">			Normal			</button>
+					<button class="space" data-mode="hard">				Hard				</button>
+					<button class="space" data-mode="continue">		Continue		</button>
+					<button class="space" data-mode="high">				High Scores	</button>
 				</div>
 			</span>
 
-			<span style = 'display: none;' id = 'game-page'>
+			<span class="hidden" id="game-page">
 				<canvas id="gjs-canvas"></canvas>
 			</span>
 
-			<span style = 'display: none;' id = 'high-page'>	
-				<h1 class = 'title'>
+			<span class="hidden" id="high-page">	
+				<h1 class="title">
 					High Scores
 				</h1>
 				<div class="app-content">
-					<ul id = 'highscores'>
-					</ul>
-					<button class = 'space' id = 'back'>Back</button>
+					<ul id="highscores"></ul>
+					<button class="space" id ="back">Back</button>
 				</div>
 			</span>
 				
-			<span style = 'display: none;' id = 'loading'>
+			<span class="hidden" id ="loading">
 				<div class="app-content">
-						<div class = 'loading'>
+						<div class="loading">
 							<div id="floatingBarsG">
 								<div class="blockG" id="rotateG_01"> </div>
 								<div class="blockG" id="rotateG_02"> </div>
@@ -69,27 +68,28 @@
 		<!-- zerver:js/main.min.js -->
 		<script src="zerver/API.js"></script>
 		<script src="js/lib/yabble.js"></script>
-    	<script src="js/lib/gamejs.min.js"></script>
-    	<script src="http://zeptojs.com/zepto.min.js"></script>
-    	<script src="http://cdn.kik.com/cards/0/cards.js"></script>
+    <script src="js/lib/gamejs.min.js"></script>
+  	<script src="http://zeptojs.com/zepto.min.js"></script>
+  	<script src="http://cdn.kik.com/cards/0/cards.js"></script>
 		<script src="http://cdn.kik.com/app/1/app.js"></script>
 		<script src="js/main.js"></script>
 		<script src="js/globals.js"></script>
 		<!-- /zerver -->
 		<script>
 			$(document).ready(function(){
+				// This hack is required for older samsung s series, canvas doesn't load otherwise~ 
 				function hack() {
-					var canvas = document.getElementById('canvas-hack');
+					var canvas = document.getElementById("canvas-hack");
 					canvas.width = window.innerWidth;
 					canvas.height = window.innerHeight;
 					g = canvas.getContext("2d");
 
 					var move = function(x, y){
-					    g.fillStyle = '#ff0000';
-					    g.beginPath();
+				    g.fillStyle = '#ff0000';
+				    g.beginPath();
 						g.moveTo(x, y);
 						g.arc(x, y, 10, 0, Math.PI * 2, false);
-					    g.fill();
+				    g.fill();
 					}
 
 					var i  = 0;
